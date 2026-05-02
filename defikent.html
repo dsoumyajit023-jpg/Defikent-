@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defikent — Bike Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gray-50: #f8f9fb;
+    --gray-100: #f0f2f7;
+    --gray-200: #e2e6ef;
+    --gray-300: #c8cdd9;
+    --gray-400: #9ba3b5;
+    --gray-500: #6b7385;
+    --gray-600: #4a5168;
+    --gray-700: #343a52;
+    --gray-800: #1e2235;
+    --gray-900: #0f1220;
+
+    --blue-50: #eef4ff;
+    --blue-100: #d8e8ff;
+    --blue-200: #b0cfff;
+    --blue-300: #75acff;
+    --blue-400: #3d86f8;
+    --blue-500: #1a64e8;
+    --blue-600: #1050cc;
+    --blue-700: #0c3da4;
+    --blue-800: #082e82;
+    --blue-900: #041a5a;
+
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 22px;
+    --radius-xl: 30px;
+    --radius-full: 100px;
+
+    --shadow-soft: 0 4px 24px rgba(26,100,232,0.08), 0 1px 4px rgba(0,0,0,0.06);
+    --shadow-blue: 0 8px 32px rgba(26,100,232,0.18);
+    --shadow-card: 0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+
+    --font-main: 'Outfit', sans-serif;
+    --font-alt: 'Space Grotesk', sans-serif;
+
+    --groq-key: gsk_placeholder;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-main);
+    background: linear-gradient(160deg, var(--gray-50) 0%, #eef4ff 50%, var(--gray-100) 100%);
+    min-height: 100vh;
+    color: var(--gray-800);
+    overflow-x: hidden;
+  }
+
+  /* ========== LOGO ANIMATION ========== */
+  #splash {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, var(--gray-900) 0%, var(--blue-900) 100%);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    flex-direction: column; gap: 12px;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  #splash.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
+
+  .logo-wrap {
+    display: flex; align-items: center; gap: 14px;
+    animation: logoEntry 1s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes logoEntry {
+    from { opacity: 0; transform: scale(0.6) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .logo-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 rgba(61,134,248,0.4);
+    animation: pulse-glow 2s ease-in-out 0.5s infinite;
+  }
+  @keyframes pulse-glow {
+    0%,100% { box-shadow: 0 0 0 0 rgba(61,134,248,0.4); }
+    50% { box-shadow: 0 0 0 16px rgba(61,134,248,0); }
+  }
+  .logo-icon::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+    animation: shine 2s ease-in-out 0.8s infinite;
+  }
+  @keyframes shine {
+    0% { transform: translateX(-100%) rotate(0deg); }
+    100% { transform: translateX(100%) rotate(0deg); }
+  }
+
+  .logo-text-splash {
+    font-family: var(--font-alt);
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -1px;
+  }
+  .logo-text-splash span { color: var(--blue-300); }
+
+  .splash-tagline {
+    color: var(--gray-400);
+    font-size: 15px;
+    font-weight: 400;
+    animation: fadeUp 1s 0.6s both;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+  .splash-dots {
+    display: flex; gap: 6px; margin-top: 32px;
+    animation: fadeUp 1s 0.9s both;
+  }
+  .splash-dots span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-400);
+    animation: bounce 1.2s ease-in-out infinite;
+  }
+  .splash-dots span:nth-child(2) { animation-delay: 0.2s; background: var(--blue-300); }
+  .splash-dots span:nth-child(3) { animation-delay: 0.4s; background: var(--gray-400); }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(-8px); opacity: 1; }
+  }
+
+  /* ========== HEADER ========== */
+  header {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 14px 32px;
+    display: flex; align-items: center; gap: 14px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  }
+  .header-logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    position: relative; overflow: hidden;
+  }
+  .header-logo-icon::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
+    animation: shine 3s ease-in-out 1s infinite;
+  }
+  .header-logo-text {
+    font-family: var(--font-alt);
+    font-size: 22px; font-weight: 700;
+    color: var(--gray-800);
+    letter-spacing: -0.5px;
+  }
+  .header-logo-text span { color: var(--blue-500); }
+  .header-tagline {
+    margin-left: auto;
+    font-size: 12px; color: var(--gray-400);
+    font-weight: 500; letter-spacing: 0.5px;
+  }
+
+  /* ========== MAIN LAYOUT ========== */
+  main { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+
+  /* ========== SECTION TITLES ========== */
+  .section-label {
+    font-size: 11px; font-weight: 600; color: var(--blue-500);
+    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 22px; font-weight: 700; color: var(--gray-800);
+    margin-bottom: 20px;
+  }
+
+  /* ========== CARDS ========== */
+  .card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: var(--shadow-soft); }
+
+  /* ========== INPUTS ========== */
+  .input-row { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
+
+  input[type="text"], select {
+    font-family: var(--font-main);
+    font-size: 15px; font-weight: 500;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-full);
+    padding: 12px 20px;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    flex: 1; min-width: 140px;
+  }
+  input[type="text"]:focus, select:focus {
+    border-color: var(--blue-400);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(61,134,248,0.12);
+  }
+  input[type="text"]::placeholder { color: var(--gray-400); font-weight: 400; }
+
+  /* ========== BUTTONS ========== */
+  .btn {
+    font-family: var(--font-main);
+    font-size: 14px; font-weight: 600;
+    border: none; cursor: pointer;
+    border-radius: var(--radius-full);
+    padding: 12px 24px;
+    transition: all 0.2s cubic-bezier(.16,1,.3,1);
+    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+    color: white;
+    box-shadow: var(--shadow-blue);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(26,100,232,0.28); }
+
+  .btn-ghost {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    border: 1px solid var(--gray-200);
+  }
+  .btn-ghost:hover { background: var(--gray-200); }
+
+  .btn-sm {
+    font-size: 13px; padding: 8px 16px;
+  }
+
+  /* ========== BIKE INPUT CARDS ========== */
+  .bikes-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin-bottom: 16px;
+  }
+  @media (max-width: 600px) { .bikes-grid { grid-template-columns: 1fr; } }
+
+  .bike-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--gray-200);
+    padding: 20px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .bike-card.filled {
+    border-style: solid;
+    border-color: var(--blue-200);
+    background: var(--blue-50);
+  }
+  .bike-card-num {
+    width: 28px; height: 28px;
+    background: var(--gray-100);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  .bike-card.filled .bike-card-num {
+    background: var(--blue-500); color: white;
+  }
+  .bike-card input {
+    width: 100%; border-radius: var(--radius-md);
+    font-size: 15px;
+  }
+  .remove-bike {
+    position: absolute; top: 12px; right: 12px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--gray-200); color: var(--gray-500);
+    border: none; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .remove-bike:hover { background: #ffd0d0; color: #c0392b; }
+
+  /* ========== LOCATION ROW ========== */
+  .location-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .location-row select { flex: 1; min-width: 140px; }
+
+  /* ========== PREFERENCE CHIPS ========== */
+  .chips-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .chip {
+    font-family: var(--font-main);
+    font-size: 13px; font-weight: 500;
+    border-radius: var(--radius-full);
+    padding: 8px 16px;
+    background: var(--gray-100);
+    border: 1.5px solid var(--gray-200);
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .chip:hover { background: var(--blue-50); border-color: var(--blue-300); color: var(--blue-600); }
+  .chip.active {
+    background: var(--blue-500); border-color: var(--blue-500);
+    color: white;
+    box-shadow: 0 4px 12px rgba(26,100,232,0.25);
+  }
+
+  /* ========== SLIDER ========== */
+  .slider-row { display: flex; align-items: center; gap: 16px; margin-top: 8px; }
+  input[type="range"] {
+    flex: 1; height: 6px; cursor: pointer;
+    accent-color: var(--blue-500);
+    border: none; border-radius: 0;
+    background: none; padding: 0;
+  }
+  .slider-val {
+    font-size: 15px; font-weight: 700; color: var(--blue-600);
+    min-width: 72px;
+  }
+
+  /* ========== LOADING ========== */
+  #loading {
+    display: none;
+    flex-direction: column; align-items: center; gap: 16px;
+    padding: 40px;
+  }
+  #loading.show { display: flex; }
+  .spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--gray-200);
+    border-top-color: var(--blue-500);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { color: var(--gray-500); font-size: 15px; font-weight: 500; }
+
+  /* ========== RESULTS ========== */
+  #results { display: none; }
+  #results.show { display: block; }
+
+  /* Compare header */
+  .compare-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px; align-items: center;
+    margin-bottom: 24px;
+  }
+  .bike-header-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--gray-200);
+    padding: 18px 20px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .bike-header-card.winner {
+    border-color: var(--blue-400);
+    background: linear-gradient(135deg, var(--blue-50), white);
+    box-shadow: var(--shadow-blue);
+  }
+  .winner-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--blue-500); color: white;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: var(--radius-full);
+    margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .bike-name-result { font-size: 20px; font-weight: 700; color: var(--gray-800); }
+  .bike-score-wrap { margin-top: 12px; }
+  .score-ring {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: 4px solid var(--blue-500);
+    font-size: 22px; font-weight: 800;
+    color: var(--blue-600);
+    background: var(--blue-50);
+    position: relative;
+  }
+  .score-ring.gray-ring { border-color: var(--gray-300); color: var(--gray-500); background: var(--gray-50); }
+  .score-label { font-size: 11px; color: var(--gray-400); margin-top: 4px; font-weight: 500; }
+  .vs-badge {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gray-800); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* Result sections */
+  .result-section { margin-bottom: 24px; }
+  .result-section-title {
+    font-size: 13px; font-weight: 700; color: var(--gray-500);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .result-section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--gray-200);
+  }
+
+  /* Spec comparison rows */
+  .spec-table { width: 100%; border-collapse: collapse; }
+  .spec-table tr:not(:last-child) td { border-bottom: 1px solid var(--gray-100); }
+  .spec-table td { padding: 10px 8px; font-size: 14px; }
+  .spec-label { color: var(--gray-500); font-weight: 500; width: 35%; }
+  .spec-val { font-weight: 600; color: var(--gray-800); text-align: center; width: 32%; }
+  .spec-val.highlight { color: var(--blue-600); }
+  .spec-val.dim { color: var(--gray-400); }
+
+  /* Cost summary */
+  .cost-card {
+    background: linear-gradient(135deg, var(--gray-800) 0%, var(--blue-900) 100%);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    color: white;
+    margin-bottom: 20px;
+  }
+  .cost-card-title { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+  .cost-total { font-size: 28px; font-weight: 800; color: white; }
+  .cost-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .cost-item { background: rgba(255,255,255,0.07); border-radius: var(--radius-md); padding: 12px 16px; }
+  .cost-item-label { font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 500; }
+  .cost-item-val { font-size: 16px; font-weight: 700; color: white; margin-top: 2px; }
+
+  /* Verdict */
+  .verdict-card {
+    background: var(--blue-50);
+    border: 2px solid var(--blue-200);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+  }
+  .verdict-icon { font-size: 24px; margin-bottom: 8px; }
+  .verdict-text { font-size: 15px; line-height: 1.65; color: var(--gray-700); }
+  .verdict-text strong { color: var(--blue-600); }
+
+  /* YES/NO pill */
+  .yesno-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .yesno-item {
+    background: white;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-200);
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .yesno-badge {
+    font-size: 12px; font-weight: 700;
+    padding: 3px 10px; border-radius: var(--radius-full);
+    flex-shrink: 0;
+  }
+  .yesno-badge.yes { background: #dcfce7; color: #15803d; }
+  .yesno-badge.no { background: #fee2e2; color: #dc2626; }
+  .yesno-label { font-size: 13px; color: var(--gray-600); font-weight: 500; }
+
+  /* Error */
+  .error-box {
+    background: #fff5f5; border: 1.5px solid #fecaca;
+    border-radius: var(--radius-md); padding: 16px 20px;
+    color: #dc2626; font-size: 14px; font-weight: 500;
+    display: none;
+  }
+  .error-box.show { display: block; }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 600px) {
+    main { padding: 20px 14px 60px; }
+    header { padding: 12px 18px; }
+    .header-tagline { display: none; }
+    .compare-header { grid-template-columns: 1fr; gap: 8px; }
+    .vs-badge { display: none; }
+    .cost-grid { grid-template-columns: 1fr; }
+    .yesno-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Fade-in anim */
+  .fadein { animation: fadeIn 0.5s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="logo-wrap">
+    <div class="logo-icon">🏍️</div>
+    <span class="logo-text-splash">Defi<span>kent</span></span>
+  </div>
+  <p class="splash-tagline">Smart Bike Comparison</p>
+  <div class="splash-dots">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-logo-icon">🏍️</div>
+  <span class="header-logo-text">Defi<span>kent</span></span>
+  <span class="header-tagline">AI Bike Comparison</span>
+</header>
+
+<main>
+  <!-- BIKE INPUT -->
+  <div class="card fadein" style="animation-delay:0.1s">
+    <p class="section-label">Step 1</p>
+    <p class="section-title">Enter Your Bikes</p>
+    <div class="bikes-grid" id="bikesGrid">
+      <div class="bike-card" id="bikeCard0">
+        <div class="bike-card-num">1</div>
+        <input type="text" id="bike0" placeholder="e.g. Dominar 400" oninput="checkFilled(0)">
+      </div>
+      <div class="bike-card" id="bikeCard1">
+        <div class="bike-card-num">2</div>
+        <input type="text" id="bike1" placeholder="e.g. Classic 350" oninput="checkFilled(1)">
+      </div>
+    </div>
+    <div id="thirdBikeWrap" style="display:none; margin-bottom: 14px;">
+      <div class="bike-card" id="bikeCard2">
+        <button class="remove-bike" onclick="removeThird()">✕</button>
+        <div class="bike-card-num">3</div>
+        <input type="text" id="bike2" placeholder="e.g. KTM Duke 390" oninput="checkFilled(2)">
+      </div>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="addThirdBtn" onclick="addThird()">+ Add 3rd Bike</button>
+  </div>
+
+  <!-- LOCATION -->
+  <div class="card fadein" style="animation-delay:0.2s">
+    <p class="section-label">Step 2</p>
+    <p class="section-title">Your Location</p>
+    <div class="location-row">
+      <select id="stateSelect" onchange="loadCities()">
+        <option value="">Select State</option>
+        <option>Andhra Pradesh</option><option>Arunachal Pradesh</option>
+        <option>Assam</option><option>Bihar</option><option>Chhattisgarh</option>
+        <option>Goa</option><option>Gujarat</option><option>Haryana</option>
+        <option>Himachal Pradesh</option><option>Jharkhand</option>
+        <option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option>
+        <option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
+        <option>Mizoram</option><option>Nagaland</option><option>Odisha</option>
+        <option>Punjab</option><option>Rajasthan</option><option>Sikkim</option>
+        <option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option>
+        <option>Uttar Pradesh</option><option>Uttarakhand</option>
+        <option>West Bengal</option><option>Delhi</option>
+        <option>Chandigarh</option><option>J&amp;K</option>
+      </select>
+      <select id="citySelect">
+        <option value="">Select City</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- PREFERENCES -->
+  <div class="card fadein" style="animation-delay:0.3s">
+    <p class="section-label">Step 3</p>
+    <p class="section-title">Your Preferences</p>
+    <p style="font-size:13px; color:var(--gray-400); margin-bottom:12px;">What matters most to you? (select all that apply)</p>
+    <div class="chips-wrap" id="prefChips">
+      <div class="chip" onclick="toggleChip(this,'daily_commute')">🏙️ Daily Commute</div>
+      <div class="chip" onclick="toggleChip(this,'rapido_ola')">🛵 Rapido / OLA</div>
+      <div class="chip" onclick="toggleChip(this,'long_tours')">🏔️ Long Tours</div>
+      <div class="chip" onclick="toggleChip(this,'highway')">🛣️ Highway Riding</div>
+      <div class="chip" onclick="toggleChip(this,'city_traffic')">🚦 Heavy City Traffic</div>
+      <div class="chip" onclick="toggleChip(this,'fuel_economy')">⛽ Best Mileage</div>
+      <div class="chip" onclick="toggleChip(this,'style')">✨ Style & Look</div>
+      <div class="chip" onclick="toggleChip(this,'low_maintenance')">🔧 Low Maintenance</div>
+      <div class="chip" onclick="toggleChip(this,'resale')">💰 Good Resale Value</div>
+      <div class="chip" onclick="toggleChip(this,'performance')">🔥 Performance & Speed</div>
+    </div>
+    <input type="text" id="customPref" placeholder="Any other preference? e.g. I need 50 km/day for delivery" style="margin-top:4px; width:100%; border-radius:var(--radius-md);">
+    <div class="slider-row" style="margin-top: 20px;">
+      <span style="font-size:13px; color:var(--gray-500); font-weight:500;">Daily km:</span>
+      <input type="range" min="10" max="200" value="50" id="kmSlider" oninput="document.getElementById('kmVal').textContent=this.value+' km/day'">
+      <span class="slider-val" id="kmVal">50 km/day</span>
+    </div>
+    <div class="slider-row" style="margin-top: 12px;">
+      <span style="font-size:13px; color:var(--gray-500); font-weight:500;">Monthly salary:</span>
+      <input type="range" min="10000" max="200000" step="5000" value="40000" id="salarySlider" oninput="document.getElementById('salaryVal').textContent='₹'+Number(this.value).toLocaleString('en-IN')">
+      <span class="slider-val" id="salaryVal">₹40,000</span>
+    </div>
+  </div>
+
+  <!-- COMPARE BUTTON -->
+  <div class="fadein" style="animation-delay:0.4s; text-align:center; margin-bottom:20px;">
+    <button class="btn btn-primary" onclick="compareNow()" style="font-size:16px; padding:16px 40px;">
+      🔍 Compare Bikes with AI
+    </button>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- LOADING -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <span class="loading-text">AI is analyzing your bikes...</span>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
+</main>
+
+<script>
+const CITIES = {
+  'West Bengal': ['Kolkata','Howrah','Durgapur','Asansol','Siliguri','Kharagpur'],
+  'Maharashtra': ['Mumbai','Pune','Nagpur','Nashik','Aurangabad','Thane'],
+  'Karnataka': ['Bengaluru','Mysuru','Hubli','Mangaluru','Belagavi'],
+  'Tamil Nadu': ['Chennai','Coimbatore','Madurai','Tiruchirappalli','Salem'],
+  'Delhi': ['New Delhi','Dwarka','Noida','Gurgaon','Faridabad'],
+  'Uttar Pradesh': ['Lucknow','Kanpur','Varanasi','Agra','Prayagraj','Ghaziabad'],
+  'Rajasthan': ['Jaipur','Jodhpur','Udaipur','Kota','Bikaner'],
+  'Gujarat': ['Ahmedabad','Surat','Vadodara','Rajkot','Gandhinagar'],
+  'Madhya Pradesh': ['Bhopal','Indore','Gwalior','Jabalpur','Ujjain'],
+  'Punjab': ['Chandigarh','Ludhiana','Amritsar','Jalandhar','Patiala'],
+  'Haryana': ['Gurugram','Faridabad','Panipat','Ambala','Rohtak'],
+  'Andhra Pradesh': ['Visakhapatnam','Vijayawada','Guntur','Nellore','Tirupati'],
+  'Telangana': ['Hyderabad','Warangal','Nizamabad','Karimnagar'],
+  'Kerala': ['Thiruvananthapuram','Kochi','Kozhikode','Thrissur','Kollam'],
+  'Bihar': ['Patna','Gaya','Muzaffarpur','Bhagalpur'],
+  'Odisha': ['Bhubaneswar','Cuttack','Rourkela','Berhampur'],
+  'Assam': ['Guwahati','Silchar','Dibrugarh','Jorhat'],
+  'Jharkhand': ['Ranchi','Jamshedpur','Dhanbad','Bokaro'],
+  'Chhattisgarh': ['Raipur','Bhilai','Bilaspur','Korba'],
+  'Goa': ['Panaji','Margao','Vasco da Gama'],
+  'Himachal Pradesh': ['Shimla','Manali','Dharamshala','Solan'],
+  'Uttarakhand': ['Dehradun','Haridwar','Rishikesh','Nainital'],
+  'Chandigarh': ['Chandigarh'],
+  'J&K': ['Jammu','Srinagar','Leh'],
+};
+const DEFAULT_CITIES = ['Select City','City 1','City 2','City 3'];
+
+function loadCities() {
+  const st = document.getElementById('stateSelect').value;
+  const cs = document.getElementById('citySelect');
+  cs.innerHTML = '<option value="">Select City</option>';
+  const list = CITIES[st] || [];
+  list.forEach(c => { const o = document.createElement('option'); o.textContent = c; cs.appendChild(o); });
+}
+
+function addThird() {
+  document.getElementById('thirdBikeWrap').style.display = 'block';
+  document.getElementById('addThirdBtn').style.display = 'none';
+}
+function removeThird() {
+  document.getElementById('thirdBikeWrap').style.display = 'none';
+  document.getElementById('addThirdBtn').style.display = 'inline-flex';
+  document.getElementById('bike2').value = '';
+  checkFilled(2);
+}
+function checkFilled(i) {
+  const val = document.getElementById('bike'+i).value.trim();
+  document.getElementById('bikeCard'+i).classList.toggle('filled', val.length > 0);
+}
+
+const selectedPrefs = new Set();
+function toggleChip(el, key) {
+  el.classList.toggle('active');
+  if (selectedPrefs.has(key)) selectedPrefs.delete(key);
+  else selectedPrefs.add(key);
+}
+
+function showError(msg) {
+  const e = document.getElementById('errorBox');
+  e.textContent = msg; e.classList.add('show');
+  setTimeout(() => e.classList.remove('show'), 5000);
+}
+
+async function compareNow() {
+  const b0 = document.getElementById('bike0').value.trim();
+  const b1 = document.getElementById('bike1').value.trim();
+  const b2 = document.getElementById('bike2').value.trim();
+  const state = document.getElementById('stateSelect').value;
+  const city = document.getElementById('citySelect').value;
+  const customPref = document.getElementById('customPref').value.trim();
+  const kmDay = document.getElementById('kmSlider').value;
+  const salary = document.getElementById('salarySlider').value;
+
+  if (!b0 || !b1) { showError('Please enter at least 2 bike models.'); return; }
+
+  const bikes = [b0, b1];
+  if (b2) bikes.push(b2);
+
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('results').innerHTML = '';
+
+  const prefList = Array.from(selectedPrefs).join(', ') || 'general riding';
+  const location = (city && state) ? `${city}, ${state}` : state || 'India';
+
+  const prompt = `You are a professional Indian motorcycle comparison expert. Compare these bikes: ${bikes.join(' vs ')}.
+
+User details:
+- Location: ${location}
+- Daily riding: ${kmDay} km/day
+- Monthly salary: ₹${Number(salary).toLocaleString('en-IN')}
+- Preferences: ${prefList}
+- Custom note: ${customPref || 'none'}
+
+Return ONLY a JSON object (no markdown, no explanation outside JSON) with exactly this structure:
+{
+  "bikes": [
+    {
+      "name": "Full Bike Name",
+      "specs": {
+        "engine": "...",
+        "power": "...",
+        "torque": "...",
+        "mileage": "...",
+        "fuel_tank": "...",
+        "tyre_front": "...",
+        "tyre_rear": "...",
+        "weight": "...",
+        "seat_height": "...",
+        "ground_clearance": "...",
+        "price_ex": "..."
+      },
+      "score": 78,
+      "emi": "₹X,XXX/month (3yr)",
+      "fuel_cost_month": "₹X,XXX",
+      "service_cost_year": "₹X,XXX",
+      "insurance_year": "₹X,XXX",
+      "total_monthly_cost": "₹X,XXX",
+      "salary_needed": "₹XX,XXX/month recommended",
+      "parts_availability": "Excellent/Good/Average",
+      "city_traffic_score": "X/10",
+      "resale_value": "Good/Average/Poor"
+    }
+  ],
+  "winner_index": 0,
+  "winner_reason": "short reason in 1 line",
+  "yes_no": [
+    {"question": "Best for ${location} traffic?", "winner": 0, "yes_index": 0},
+    {"question": "Better mileage?", "winner": 0, "yes_index": 0},
+    {"question": "Affordable on ₹${Number(salary).toLocaleString('en-IN')} salary?", "winner": 0, "yes_index": 0},
+    {"question": "Good for daily ${kmDay}km rides?", "winner": 0, "yes_index": 0}
+  ],
+  "verdict": "2-3 sentence smart conclusion. Mention specific use cases. Be direct and helpful."
+}`;
+
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getGroqKey()
+      },
+      body: JSON.stringify({
+        model: 'llama3-70b-8192',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 2000
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || 'API error ' + res.status);
+    }
+
+    const data = await res.json();
+    let raw = data.choices[0].message.content.trim();
+    raw = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(raw);
+    renderResults(parsed, bikes);
+
+  } catch (err) {
+    showError('Error: ' + err.message + '. Please check your Groq API key in Settings.');
+    console.error(err);
+  } finally {
+    document.getElementById('loading').classList.remove('show');
+  }
+}
+
+function getGroqKey() {
+  let key = localStorage.getItem('defikent_groq_key');
+  if (!key) {
+    key = prompt('Enter your free Groq API key (get it at console.groq.com):');
+    if (key) localStorage.setItem('defikent_groq_key', key.trim());
+  }
+  return key || '';
+}
+
+function renderResults(data, inputBikes) {
+  const { bikes, winner_index, winner_reason, yes_no, verdict } = data;
+  const container = document.getElementById('results');
+  container.classList.add('show');
+
+  // Compare header
+  let headerHTML = `<div class="result-section">
+    <p class="section-label">AI Comparison Result</p>
+    <p class="section-title">Side-by-Side Analysis</p>
+    <div class="compare-header" style="grid-template-columns: ${bikes.length === 3 ? '1fr auto 1fr auto 1fr' : '1fr auto 1fr'};">`;
+
+  bikes.forEach((bike, i) => {
+    const isWinner = i === winner_index;
+    headerHTML += `<div class="bike-header-card ${isWinner ? 'winner' : ''}">
+      ${isWinner ? `<div class="winner-badge">🏆 Winner</div>` : ''}
+      <div class="bike-name-result">${bike.name}</div>
+      <div class="bike-score-wrap">
+        <div class="score-ring ${isWinner ? '' : 'gray-ring'}">${bike.score}</div>
+        <div class="score-label">/ 100</div>
+      </div>
+    </div>`;
+    if (i < bikes.length - 1) headerHTML += `<div class="vs-badge">VS</div>`;
+  });
+  headerHTML += `</div>
+    <p style="text-align:center; font-size:13px; color:var(--gray-500); margin-top:10px;">🏆 ${winner_reason}</p>
+  </div>`;
+
+  // Specs comparison
+  const specKeys = {
+    engine: 'Engine', power: 'Power', torque: 'Torque', mileage: 'Mileage',
+    fuel_tank: 'Fuel Tank', tyre_front: 'Front Tyre', tyre_rear: 'Rear Tyre',
+    weight: 'Weight', seat_height: 'Seat Height', ground_clearance: 'Ground Clearance',
+    price_ex: 'Ex-showroom Price'
+  };
+
+  let specsHTML = `<div class="card result-section">
+    <div class="result-section-title">📊 Full Specifications</div>
+    <table class="spec-table">
+      <tr>
+        <td class="spec-label" style="font-weight:700;">Spec</td>
+        ${bikes.map((b,i) => `<td class="spec-val" style="font-weight:700; color:var(--gray-800);">${b.name.split(' ').slice(-2).join(' ')}</td>`).join('')}
+      </tr>`;
+
+  Object.entries(specKeys).forEach(([key, label]) => {
+    specsHTML += `<tr>
+      <td class="spec-label">${label}</td>
+      ${bikes.map((b,i) => `<td class="spec-val ${i === winner_index ? 'highlight' : ''}">${b.specs[key] || '—'}</td>`).join('')}
+    </tr>`;
+  });
+
+  const metaKeys = [
+    ['parts_availability', '🔧 Parts Available'],
+    ['city_traffic_score', '🚦 City Traffic'],
+    ['resale_value', '💰 Resale Value']
+  ];
+  metaKeys.forEach(([key, label]) => {
+    specsHTML += `<tr>
+      <td class="spec-label">${label}</td>
+      ${bikes.map((b,i) => `<td class="spec-val ${i === winner_index ? 'highlight' : ''}">${b[key] || '—'}</td>`).join('')}
+    </tr>`;
+  });
+
+  specsHTML += `</table></div>`;
+
+  // Cost cards
+  let costHTML = `<div class="result-section">
+    <div class="result-section-title" style="background:none; border:none;">💸 Monthly Cost Breakdown</div>
+    <div style="display:grid; grid-template-columns: repeat(${bikes.length}, 1fr); gap:14px;">`;
+
+  bikes.forEach((bike, i) => {
+    const isW = i === winner_index;
+    costHTML += `<div class="cost-card" style="${isW ? '' : 'background: linear-gradient(135deg, #374151, #1f2937);'}">
+      ${isW ? `<span style="font-size:11px; font-weight:700; background:rgba(255,255,255,0.2); padding:3px 10px; border-radius:30px; letter-spacing:0.5px;">WINNER</span><br><br>` : ''}
+      <div class="cost-card-title">${bike.name}</div>
+      <div class="cost-total">${bike.total_monthly_cost}</div>
+      <div class="cost-sub">Total monthly cost</div>
+      <div class="cost-grid">
+        <div class="cost-item"><div class="cost-item-label">EMI</div><div class="cost-item-val">${bike.emi || '—'}</div></div>
+        <div class="cost-item"><div class="cost-item-label">Fuel/month</div><div class="cost-item-val">${bike.fuel_cost_month}</div></div>
+        <div class="cost-item"><div class="cost-item-label">Service/year</div><div class="cost-item-val">${bike.service_cost_year}</div></div>
+        <div class="cost-item"><div class="cost-item-label">Insurance/yr</div><div class="cost-item-val">${bike.insurance_year}</div></div>
+      </div>
+      <div style="margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.12); font-size:13px; color:rgba(255,255,255,0.6);">
+        Salary recommended: <strong style="color:white;">${bike.salary_needed}</strong>
+      </div>
+    </div>`;
+  });
+  costHTML += `</div></div>`;
+
+  // Yes/No
+  let yesnoHTML = `<div class="card result-section">
+    <div class="result-section-title">✅ Quick Yes / No Answers</div>
+    <div class="yesno-grid">`;
+
+  (yes_no || []).forEach(item => {
+    bikes.forEach((bike, i) => {
+      const isYes = item.yes_index === i;
+      yesnoHTML += `<div class="yesno-item">
+        <span class="yesno-badge ${isYes ? 'yes' : 'no'}">${isYes ? 'YES' : 'NO'}</span>
+        <span class="yesno-label">${bike.name.split(' ').slice(-2).join(' ')}: ${item.question}</span>
+      </div>`;
+    });
+  });
+  yesnoHTML += `</div></div>`;
+
+  // Verdict
+  let verdictHTML = `<div class="verdict-card result-section">
+    <div class="verdict-icon">🎯</div>
+    <div class="verdict-text">${verdict}</div>
+  </div>`;
+
+  // Reset button
+  let resetHTML = `<div style="text-align:center; margin-top:24px;">
+    <button class="btn btn-ghost" onclick="resetAll()">↩ Compare Again</button>
+  </div>`;
+
+  container.innerHTML = headerHTML + specsHTML + costHTML + yesnoHTML + verdictHTML + resetHTML;
+  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetAll() {
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('results').innerHTML = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Splash screen
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(() => document.getElementById('splash').remove(), 700);
+  }, 2400);
+});
+</script>
+</body>
+</html>
