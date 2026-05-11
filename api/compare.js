@@ -10,7 +10,7 @@
  */
 
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const MODEL        = process.env.GROQ_MODEL || 'llama3-70b-8192';
+const MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const MAX_TOKENS   = 2000;
 const TEMPERATURE  = 0.3;
 
