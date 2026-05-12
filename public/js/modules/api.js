@@ -1,16 +1,21 @@
-/**
- * api.js — HTTP layer. Key stays on server.
- */
-
+// api.js
 import { CONFIG } from './config.js';
 
 export async function fetchComparison(prompt) {
   let res;
   try {
-    res = await fetch(CONFIG.API_ENDPOINT, {
+    res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Bearer ${CONFIG.GROQ_API_KEY}, // add this to config.js
+      },
+      body: JSON.stringify({
+        model: CONFIG.GROQ_MODEL,
+        max_tokens: CONFIG.GROQ_MAX_TOKENS,
+        temperature: CONFIG.GROQ_TEMPERATURE,
+        messages: [{ role: 'user', content: prompt }],
+      }),
     });
   } catch {
     throw new Error('Network error — check your connection and try again.');
@@ -18,12 +23,12 @@ export async function fetchComparison(prompt) {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || `Server error ${res.status}. Please try again.`);
+    throw new Error(body.error?.message || Server error ${res.status}. Please try again.);
   }
 
   const data = await res.json();
-  let raw = typeof data.result === 'string' ? data.result : JSON.stringify(data.result);
-  raw = raw.replace(/```json|```/g, '').trim();
+  let raw = data.choices?.[0]?.message?.content || '';
+  raw = raw.replace(/json|/g, '').trim();
 
   try {
     return JSON.parse(raw);
