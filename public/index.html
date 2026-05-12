@@ -3,111 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Defikent — AI-powered bike comparison for Indian riders. Compare specs, cost, mileage and more.">
-  <title>Defikent — Bike Comparison</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Defikent — AI-powered bike comparison for Indian riders.">
+  <title>Defikent — Bike Intelligence</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%230d1117'/%3E%3Ccircle cx='20' cy='42' r='10' fill='none' stroke='%234176e8' stroke-width='5'/%3E%3Ccircle cx='44' cy='42' r='10' fill='none' stroke='%234176e8' stroke-width='5'/%3E%3Cpath d='M20 42 L28 22 L38 30 L44 42' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- SPLASH SCREEN -->
+<!-- SPLASH -->
 <div id="splash">
-  <div class="logo-wrap">
-    <div class="logo-icon">🏍️</div>
-    <span class="logo-text-splash">Defi<span>kent</span></span>
-  </div>
-  <p class="splash-tagline">Smart Bike Comparison</p>
-  <div class="splash-dots">
-    <span></span><span></span><span></span>
-  </div>
+  <svg class="splash-wheel" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="40" cy="40" r="34" stroke="rgba(255,255,255,0.10)" stroke-width="5"/>
+    <circle cx="40" cy="40" r="34" stroke="#4176e8" stroke-width="5" stroke-linecap="round"
+      stroke-dasharray="213" stroke-dashoffset="160" class="splash-arc"/>
+    <circle cx="40" cy="40" r="7" fill="#4176e8"/>
+    <line x1="40" y1="6" x2="40" y2="74" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+    <line x1="6" y1="40" x2="74" y2="40" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+    <line x1="16" y1="16" x2="64" y2="64" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+    <line x1="64" y1="16" x2="16" y2="64" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  </svg>
+  <div class="splash-wordmark">Defi<em>kent</em></div>
+  <div class="splash-sub">Smart Bike Intelligence</div>
+  <div class="splash-bar"></div>
 </div>
 
 <!-- HEADER -->
-<header>
-  <div class="header-logo-icon">🏍️</div>
-  <span class="header-logo-text">Defi<span>kent</span></span>
-  <span class="header-tagline">AI Bike Comparison</span>
-</header>
-
-<main>
-
-  <!-- STEP 1: BIKE INPUT -->
-  <div class="card fadein" style="animation-delay:0.1s">
-    <p class="section-label">Step 1</p>
-    <p class="section-title">Enter Your Bikes</p>
-    <div class="bikes-grid" id="bikesGrid">
-      <div class="bike-card" id="bikeCard0">
-        <div class="bike-card-num">1</div>
-        <input type="text" id="bike0" placeholder="e.g. Dominar 400" autocomplete="off">
-      </div>
-      <div class="bike-card" id="bikeCard1">
-        <div class="bike-card-num">2</div>
-        <input type="text" id="bike1" placeholder="e.g. Classic 350" autocomplete="off">
-      </div>
-    </div>
-    <div id="thirdBikeWrap" style="display:none; margin-bottom:14px;">
-      <div class="bike-card" id="bikeCard2">
-        <button class="remove-bike" id="removeThirdBtn">&#x2715;</button>
-        <div class="bike-card-num">3</div>
-        <input type="text" id="bike2" placeholder="e.g. KTM Duke 390" autocomplete="off">
-      </div>
-    </div>
-    <button class="btn btn-ghost btn-sm" id="addThirdBtn">+ Add 3rd Bike</button>
-  </div>
-
-  <!-- STEP 2: LOCATION -->
-  <div class="card fadein" style="animation-delay:0.2s">
-    <p class="section-label">Step 2</p>
-    <p class="section-title">Your Location</p>
-    <div class="location-row">
-      <select id="stateSelect">
-        <option value="">Select State</option>
-      </select>
-      <select id="citySelect">
-        <option value="">Select City</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- STEP 3: PREFERENCES -->
-  <div class="card fadein" style="animation-delay:0.3s">
-    <p class="section-label">Step 3</p>
-    <p class="section-title">Your Preferences</p>
-    <p style="font-size:13px; color:var(--gray-400); margin-bottom:12px;">What matters most to you? (select all that apply)</p>
-    <div class="chips-wrap" id="prefChips"></div>
-    <input type="text" id="customPref" placeholder="Any other preference? e.g. I need 50 km/day for delivery" style="margin-top:4px; width:100%; border-radius:var(--radius-md);" autocomplete="off">
-    <div class="slider-row" style="margin-top:20px;">
-      <span style="font-size:13px; color:var(--gray-500); font-weight:500;">Daily km:</span>
-      <input type="range" id="kmSlider">
-      <span class="slider-val" id="kmVal">50 km/day</span>
-    </div>
-    <div class="slider-row" style="margin-top:12px;">
-      <span style="font-size:13px; color:var(--gray-500); font-weight:500;">Monthly salary:</span>
-      <input type="range" id="salarySlider">
-      <span class="slider-val" id="salaryVal">&#8377;40,000</span>
-    </div>
-  </div>
-
-  <!-- COMPARE BUTTON -->
-  <div class="fadein" style="animation-delay:0.4s; text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary" id="compareBtn" style="font-size:16px; padding:16px 40px;">
-      &#128269; Compare Bikes with AI
+<header id="siteHeader">
+  <div class="header-wordmark">Defi<em>kent</em></div>
+  <div class="header-divider"></div>
+  <span class="header-sub">Bike Comparison</span>
+  <div class="header-controls">
+    <button class="ctrl-btn" id="soundToggle">Sound On</button>
+    <button class="ctrl-btn" id="darkToggle">Dark Mode</button>
+    <button class="ctrl-btn garage-ctrl-btn" id="garageToggle" aria-expanded="false">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9.5V20H5V9.5L3 11 1.5 9.26 12 1l10.5 8.26L21 11z"/></svg>
+      My Garage
     </button>
   </div>
+</header>
+
+<!-- GARAGE PANEL -->
+<div id="garagePanel" class="garage-panel">
+  <div class="garage-header">
+    <span class="garage-title">My Garage</span>
+    <button class="btn btn-ghost btn-sm" id="garageClose">Close</button>
+  </div>
+  <div id="garageList" class="garage-list">
+    <p class="garage-empty">Your garage is empty. Save a comparison to see it here.</p>
+  </div>
+</div>
+<div id="garageOverlay" class="garage-overlay" onclick="document.getElementById('garageClose').click()"></div>
+
+<!-- MAIN -->
+<main>
+
+  <!-- TABS -->
+  <div class="tab-bar fadein" style="animation-delay:0.04s">
+    <button class="tab-btn active" data-tab="compare">Compare Bikes</button>
+    <button class="tab-btn" data-tab="suggest">AI Suggestion</button>
+  </div>
+
+  <!-- ── COMPARE TAB ── -->
+  <div class="tab-panel active" id="tab-compare">
+
+    <div class="card fadein" style="animation-delay:0.08s">
+      <div class="step-pill"><span class="step-num">1</span> Select Bikes</div>
+      <h2 class="section-heading">Which bikes are you comparing?</h2>
+      <div class="bikes-grid" id="bikesGrid">
+        <div class="bike-card" id="bikeCard0">
+          <div class="bike-card-num">Bike A</div>
+          <input type="text" id="bike0" placeholder="Try: Bajaj Dominar 400" autocomplete="off">
+        </div>
+        <div class="bike-card" id="bikeCard1">
+          <div class="bike-card-num">Bike B</div>
+          <input type="text" id="bike1" placeholder="Try: Royal Enfield Classic 350" autocomplete="off">
+        </div>
+      </div>
+      <div id="thirdBikeWrap" style="display:none; margin-bottom:14px;">
+        <div class="bike-card" id="bikeCard2">
+          <button class="remove-bike" id="removeThirdBtn" title="Remove">&#x2715;</button>
+          <div class="bike-card-num">Bike C</div>
+          <input type="text" id="bike2" placeholder="Try: KTM Duke 390" autocomplete="off">
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="addThirdBtn">+ Add Third Bike</button>
+    </div>
+
+    <div class="card fadein" style="animation-delay:0.16s">
+      <div class="step-pill"><span class="step-num">2</span> Location</div>
+      <h2 class="section-heading">Where will you ride?</h2>
+      <div class="location-row">
+        <select id="stateSelect"><option value="">Select State</option></select>
+        <select id="citySelect"><option value="">Select City</option></select>
+      </div>
+    </div>
+
+    <div class="card fadein" style="animation-delay:0.24s">
+      <div class="step-pill"><span class="step-num">3</span> Preferences</div>
+      <h2 class="section-heading">What matters most to you?</h2>
+      <p style="font-size:13px; color:var(--n500); margin-bottom:14px;">Select all that apply.</p>
+      <div class="chips-wrap" id="prefChips"></div>
+      <input type="text" id="customPref" placeholder="Anything specific? e.g. 50 km/day delivery use" style="margin-top:8px;" autocomplete="off">
+      <div class="slider-row" style="margin-top:20px;">
+        <span class="slider-label">Daily distance</span>
+        <input type="range" id="kmSlider">
+        <span class="slider-val" id="kmVal">50 km/day</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">Monthly salary</span>
+        <input type="range" id="salarySlider">
+        <span class="slider-val" id="salaryVal">&#8377;40,000</span>
+      </div>
+    </div>
+
+    <div class="fadein" style="animation-delay:0.32s; text-align:center; margin-bottom:28px;">
+      <button class="btn btn-primary" id="compareBtn" style="font-size:15px; padding:14px 40px;">
+        Run AI Comparison
+      </button>
+    </div>
+
+  </div><!-- /tab-compare -->
+
+  <!-- ── SUGGEST TAB ── -->
+  <div class="tab-panel" id="tab-suggest">
+
+    <div class="card fadein">
+      <div class="step-pill"><span class="step-num">1</span> Budget</div>
+      <h2 class="section-heading">What is your maximum budget?</h2>
+      <div class="slider-row" style="margin-top:8px;">
+        <span class="slider-label">Max budget</span>
+        <input type="range" id="budgetSlider">
+        <span class="slider-val" id="budgetVal">&#8377;1,50,000</span>
+      </div>
+    </div>
+
+    <div class="card fadein" style="animation-delay:0.08s">
+      <div class="step-pill"><span class="step-num">2</span> Location</div>
+      <h2 class="section-heading">Where are you based?</h2>
+      <div class="location-row">
+        <select id="suggestState"><option value="">Select State</option></select>
+        <select id="suggestCity"><option value="">Select City</option></select>
+      </div>
+    </div>
+
+    <div class="card fadein" style="animation-delay:0.16s">
+      <div class="step-pill"><span class="step-num">3</span> Preferences</div>
+      <h2 class="section-heading">What kind of riding do you need?</h2>
+      <p style="font-size:13px; color:var(--n500); margin-bottom:14px;">Select all that apply.</p>
+      <div class="chips-wrap" id="suggestPrefChips"></div>
+      <input type="text" id="suggestCustomPref" placeholder="Any specific need? e.g. upright seating for back pain" style="margin-top:8px;" autocomplete="off">
+    </div>
+
+    <div class="fadein" style="animation-delay:0.24s; text-align:center; margin-bottom:28px;">
+      <button class="btn btn-primary" id="suggestBtn" style="font-size:15px; padding:14px 40px;">
+        Suggest Best Bikes
+      </button>
+    </div>
+
+  </div><!-- /tab-suggest -->
 
   <!-- ERROR -->
   <div class="error-box" id="errorBox"></div>
 
   <!-- LOADING -->
   <div id="loading">
-    <div class="spinner"></div>
-    <span class="loading-text">AI is analyzing your bikes...</span>
+    <div class="wheel-spinner">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="32" stroke="var(--n200)" stroke-width="6"/>
+        <circle cx="40" cy="40" r="32" stroke="var(--accent)" stroke-width="6"
+          stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="150" class="spin-arc"/>
+        <circle cx="40" cy="40" r="7" fill="var(--accent)" fill-opacity="0.6"/>
+        <line x1="40" y1="8" x2="40" y2="72" stroke="var(--n300)" stroke-width="1.5"/>
+        <line x1="8" y1="40" x2="72" y2="40" stroke="var(--n300)" stroke-width="1.5"/>
+        <line x1="17" y1="17" x2="63" y2="63" stroke="var(--n300)" stroke-width="1.5"/>
+        <line x1="63" y1="17" x2="17" y2="63" stroke="var(--n300)" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <span class="loading-label">Analysing bikes...</span>
   </div>
 
   <!-- RESULTS -->
   <div id="results"></div>
 
 </main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bottom-nav-btn" id="garageNavBtn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9.5V20H5V9.5L3 11 1.5 9.26 12 1l10.5 8.26L21 11z"/></svg>
+    <span>My Garage</span>
+  </button>
+  <button class="bottom-nav-btn active" id="homeNavBtn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span>Search</span>
+  </button>
+  <button class="bottom-nav-btn" id="suggestNavBtn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>Suggest</span>
+  </button>
+</nav>
 
 <script type="module" src="js/main.js"></script>
 </body>
