@@ -7,10 +7,10 @@ import {
   initLocationDropdowns, initPreferenceChips, initSliders,
   initBikeCards, initBudgetSlider, initTabs,
   resetAll, resetSuggest, renderGarage,
-} from './ui.js';
-import { compareNow, suggestNow } from './compare.js';
-import { playHorn, playRevSound, setSoundEnabled, loadSoundPref } from './sounds.js';
-import { CITIES } from './data.js';
+} from './modules/ui.js';
+import { compareNow, suggestNow } from './modules/compare.js';
+import { playHorn, playRevSound, setSoundEnabled, loadSoundPref } from './modules/sounds.js';
+import { CITIES } from './modules/data.js';
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 initSplash();
