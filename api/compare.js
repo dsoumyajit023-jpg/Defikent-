@@ -1,85 +1,54 @@
 /**
- * api/compare.js
- * Vercel Serverless Function — POST /api/compare
- *
- * Receives { prompt } from the browser.
- * Calls Groq with the secret key from process.env.
- * Returns { result } as parsed JSON string.
- *
- * The GROQ_API_KEY is NEVER sent to the client.
+ * compare.js
+ * Orchestration: reads form state → builds prompt → calls API → renders result.
+ * No DOM styling, no raw fetch, no hardcoded strings.
  */
 
-const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
-const MAX_TOKENS   = 2000;
-const TEMPERATURE  = 0.3;
+import { buildPrompt } from './prompt.js';
+import { fetchComparison } from './api.js';
+import { showError, setLoading, renderResults } from './ui.js';
 
-export default async function handler(req, res) {
-  // ── CORS headers (tighten origin in production) ───────────────────────────
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+/**
+ * Entry point wired to the Compare button.
+ * @param {Set<string>} selectedPrefs - live reference from ui.initPreferenceChips()
+ */
+export async function compareNow(selectedPrefs) {
+  // ── 1. Collect inputs ──────────────────────────────────────────────────────
+  const b0 = document.getElementById('bike0')?.value.trim() || '';
+  const b1 = document.getElementById('bike1')?.value.trim() || '';
+  const b2 = document.getElementById('bike2')?.value.trim() || '';
 
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
-
-  // ── Validate env ──────────────────────────────────────────────────────────
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) {
-    console.error('[compare] GROQ_API_KEY is not set');
-    return res.status(500).json({ error: 'Server misconfiguration. Contact admin.' });
+  if (!b0 || !b1) {
+    showError('Please enter at least 2 bike models.');
+    return;
   }
 
-  // ── Validate body ─────────────────────────────────────────────────────────
-  const { prompt } = req.body || {};
-  if (!prompt || typeof prompt !== 'string' || prompt.length < 10) {
-    return res.status(400).json({ error: 'Invalid request: prompt missing or too short.' });
-  }
-  if (prompt.length > 8000) {
-    return res.status(400).json({ error: 'Prompt too long.' });
-  }
+  const bikes = b2 ? [b0, b1, b2] : [b0, b1];
+  const state      = document.getElementById('stateSelect')?.value || '';
+  const city       = document.getElementById('citySelect')?.value || '';
+  const customPref = document.getElementById('customPref')?.value.trim() || '';
+  const kmDay      = document.getElementById('kmSlider')?.value || '50';
+  const salary     = document.getElementById('salarySlider')?.value || '40000';
 
-  // ── Call Groq ─────────────────────────────────────────────────────────────
-  let groqRes;
+  const location = city && state ? `${city}, ${state}` : state || 'India';
+  const prefList = selectedPrefs.size > 0
+    ? Array.from(selectedPrefs).join(', ')
+    : 'general riding';
+
+  // ── 2. Build prompt ────────────────────────────────────────────────────────
+  const prompt = buildPrompt({ bikes, location, kmDay, salary, prefList, customPref });
+
+  // ── 3. Show loading ────────────────────────────────────────────────────────
+  setLoading(true);
+
+  // ── 4. Call API & render ───────────────────────────────────────────────────
   try {
-    groqRes = await fetch(GROQ_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: MAX_TOKENS,
-        temperature: TEMPERATURE,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
-  } catch (networkErr) {
-    console.error('[compare] Groq network error:', networkErr);
-    return res.status(502).json({ error: 'Could not reach AI service. Try again.' });
+    const result = await fetchComparison(prompt);
+    renderResults(result);
+  } catch (err) {
+    showError(err.message);
+    console.error('[Defikent] compare error:', err);
+  } finally {
+    setLoading(false);
   }
-
-  if (!groqRes.ok) {
-    const errBody = await groqRes.json().catch(() => ({}));
-    console.error('[compare] Groq API error:', groqRes.status, errBody);
-    return res.status(502).json({
-      error: errBody?.error?.message || `Groq error ${groqRes.status}`,
-    });
-  }
-
-  // ── Parse & clean Groq response ───────────────────────────────────────────
-  const groqData = await groqRes.json();
-  let raw = groqData?.choices?.[0]?.message?.content || '';
-  raw = raw.replace(/```json|```/g, '').trim();
-
-  // Validate it's parseable JSON before sending to client
-  try {
-    JSON.parse(raw);
-  } catch {
-    console.error('[compare] Groq returned non-JSON:', raw.slice(0, 200));
-    return res.status(502).json({ error: 'AI returned an unexpected format. Please retry.' });
-  }
-
-  return res.status(200).json({ result: raw });
 }
