@@ -1,7 +1,5 @@
 /**
- * data.js
- * Static data: Indian states and their cities.
- * Add/remove entries here — UI updates automatically.
+ * data.js — Indian states and cities.
  */
 
 export const CITIES = {
@@ -31,5 +29,4 @@ export const CITIES = {
   'J&K':              ['Jammu', 'Srinagar', 'Leh'],
 };
 
-/** All state names in display order */
 export const STATES = Object.keys(CITIES);
