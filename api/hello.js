@@ -1,3 +1,3 @@
 export default function handler(req, res) {
-  res.status(200).json({ message: 'Hello from Defikent API!' });
+  res.status(200).json({ message: 'Defikent API is running.' });
 }
