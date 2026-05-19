@@ -1,60 +1,48 @@
-/**
- * prompt.js — builds the AI prompt string.
- */
 
 export function buildPrompt({ bikes, location, kmDay, salary, prefList, customPref }) {
-  const salaryFormatted = Number(salary).toLocaleString('en-IN');
+  const sal = Number(salary).toLocaleString('en-IN');
+  return `You are a professional Indian motorcycle comparison expert. Compare: ${bikes.join(' vs ')}.
 
-  return `You are a professional Indian motorcycle comparison expert. Compare these bikes: ${bikes.join(' vs ')}.
-
-User details:
+User:
 - Location: ${location}
 - Daily riding: ${kmDay} km/day
-- Monthly salary: ₹${salaryFormatted}
+- Monthly salary: Rs ${sal}
 - Preferences: ${prefList}
-- Custom note: ${customPref || 'none'}
+- Note: ${customPref || 'none'}
 
-Return ONLY a valid JSON object (no markdown fences, no text outside the JSON) with exactly this structure:
+Return ONLY valid JSON, no markdown fences, no text outside JSON:
 {
   "bikes": [
     {
       "name": "Full Bike Name",
       "specs": {
-        "engine": "...",
-        "power": "...",
-        "torque": "...",
-        "mileage": "...",
-        "fuel_tank": "...",
-        "tyre_front": "...",
-        "tyre_rear": "...",
-        "weight": "...",
-        "seat_height": "...",
-        "ground_clearance": "...",
-        "price_ex": "...",
-        "launch_date": "Month YYYY (e.g. January 2019)"
+        "engine": "...", "power": "...", "torque": "...", "mileage": "...",
+        "fuel_tank": "...", "tyre_front": "...", "tyre_rear": "...",
+        "weight": "...", "seat_height": "...", "ground_clearance": "...",
+        "price_ex": "...", "launch_date": "Month YYYY"
       },
       "score": 78,
-      "emi": "₹X,XXX/month (3yr)",
-      "fuel_cost_month": "₹X,XXX",
-      "service_cost_year": "₹X,XXX",
-      "insurance_year": "₹X,XXX",
-      "total_monthly_cost": "₹X,XXX",
-      "salary_needed": "₹XX,XXX/month recommended",
+      "emi": "Rs X,XXX/month (3yr)",
+      "fuel_cost_month": "Rs X,XXX",
+      "service_cost_year": "Rs X,XXX",
+      "insurance_year": "Rs X,XXX",
+      "total_monthly_cost": "Rs X,XXX",
+      "salary_needed": "Rs XX,XXX/month recommended",
       "parts_availability": "Excellent/Good/Average",
       "city_traffic_score": "X/10",
       "resale_value": "Good/Average/Poor",
-      "key_strength": "one-line unique strength of this bike",
-      "key_weakness": "one-line main weakness"
+      "key_strength": "one-line strength",
+      "key_weakness": "one-line weakness"
     }
   ],
   "winner_index": 0,
-  "winner_reason": "short reason in 1 line",
+  "winner_reason": "one line reason",
   "differences": [
-    {"spec": "Mileage", "verdict": "which bike wins and by how much"},
-    {"spec": "Price", "verdict": "which bike wins and by how much"},
-    {"spec": "Power", "verdict": "which bike wins and by how much"},
-    {"spec": "Comfort", "verdict": "which bike wins and why"},
-    {"spec": "Maintenance Cost", "verdict": "which bike wins and why"}
+    {"spec": "Mileage", "verdict": "which wins and by how much"},
+    {"spec": "Price", "verdict": "which wins and by how much"},
+    {"spec": "Power", "verdict": "which wins and by how much"},
+    {"spec": "Comfort", "verdict": "which wins and why"},
+    {"spec": "Maintenance", "verdict": "which wins and why"}
   ],
   "yes_no": [
     {"question": "Better for ${location} city traffic?", "yes_index": 0},
@@ -64,43 +52,35 @@ Return ONLY a valid JSON object (no markdown fences, no text outside the JSON) w
     {"question": "Safer braking system overall?", "yes_index": 0},
     {"question": "Better resale value after 3 years?", "yes_index": 0}
   ],
-  "verdict": "2-3 sentence smart conclusion. Mention specific use cases. Be direct and helpful."
+  "verdict": "2-3 sentence conclusion. Be direct and helpful."
 }`;
 }
 
 export function buildSuggestPrompt({ budget, prefList, location, customPref }) {
-  const budgetFormatted = Number(budget).toLocaleString('en-IN');
-  return `You are a professional Indian motorcycle advisor. Suggest exactly 2 bikes within a budget of ₹${budgetFormatted} for a rider in ${location || 'India'}.
+  const bud = Number(budget).toLocaleString('en-IN');
+  return `You are a professional Indian motorcycle advisor. Suggest exactly 2 bikes within Rs ${bud} for a rider in ${location || 'India'}.
 
-Rider preferences: ${prefList || 'general riding'}
-Custom note: ${customPref || 'none'}
+Preferences: ${prefList || 'general riding'}
+Note: ${customPref || 'none'}
 
-Return ONLY a valid JSON object with exactly this structure (no markdown fences):
+Return ONLY valid JSON, no markdown fences, no text outside JSON:
 {
   "bikes": [
     {
       "name": "Full Bike Name",
       "specs": {
-        "engine": "...",
-        "power": "...",
-        "torque": "...",
-        "mileage": "...",
-        "fuel_tank": "...",
-        "tyre_front": "...",
-        "tyre_rear": "...",
-        "weight": "...",
-        "seat_height": "...",
-        "ground_clearance": "...",
-        "price_ex": "...",
-        "launch_date": "Month YYYY"
+        "engine": "...", "power": "...", "torque": "...", "mileage": "...",
+        "fuel_tank": "...", "tyre_front": "...", "tyre_rear": "...",
+        "weight": "...", "seat_height": "...", "ground_clearance": "...",
+        "price_ex": "...", "launch_date": "Month YYYY"
       },
       "score": 80,
-      "emi": "₹X,XXX/month (3yr)",
-      "fuel_cost_month": "₹X,XXX",
-      "service_cost_year": "₹X,XXX",
-      "insurance_year": "₹X,XXX",
-      "total_monthly_cost": "₹X,XXX",
-      "salary_needed": "₹XX,XXX/month recommended",
+      "emi": "Rs X,XXX/month (3yr)",
+      "fuel_cost_month": "Rs X,XXX",
+      "service_cost_year": "Rs X,XXX",
+      "insurance_year": "Rs X,XXX",
+      "total_monthly_cost": "Rs X,XXX",
+      "salary_needed": "Rs XX,XXX/month recommended",
       "parts_availability": "Excellent/Good/Average",
       "city_traffic_score": "X/10",
       "resale_value": "Good/Average/Poor",
@@ -109,22 +89,22 @@ Return ONLY a valid JSON object with exactly this structure (no markdown fences)
     }
   ],
   "winner_index": 0,
-  "winner_reason": "short reason why this is the top pick",
+  "winner_reason": "one line",
   "differences": [
-    {"spec": "Mileage", "verdict": "which bike wins and by how much"},
-    {"spec": "Price", "verdict": "which bike wins and by how much"},
-    {"spec": "Power", "verdict": "which bike wins and by how much"},
-    {"spec": "Comfort", "verdict": "which bike wins and why"},
-    {"spec": "Maintenance Cost", "verdict": "which bike wins and why"}
+    {"spec": "Mileage", "verdict": "..."},
+    {"spec": "Price", "verdict": "..."},
+    {"spec": "Power", "verdict": "..."},
+    {"spec": "Comfort", "verdict": "..."},
+    {"spec": "Maintenance", "verdict": "..."}
   ],
   "yes_no": [
-    {"question": "Better value for ₹${budgetFormatted} budget?", "yes_index": 0},
+    {"question": "Better value for Rs ${bud} budget?", "yes_index": 0},
     {"question": "Superior fuel efficiency?", "yes_index": 0},
     {"question": "Easier to maintain locally?", "yes_index": 0},
     {"question": "More comfortable for long rides?", "yes_index": 0},
     {"question": "Safer braking system?", "yes_index": 0},
     {"question": "Better resale value after 3 years?", "yes_index": 0}
   ],
-  "verdict": "2-3 sentence recommendation explaining which to buy and why, with specific use cases."
+  "verdict": "2-3 sentence recommendation."
 }`;
 }
