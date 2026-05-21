@@ -12,7 +12,7 @@ const MODEL      = process.env.GROQ_MODEL || 'llama3-70b-8192';
 const MAX_TOKENS = 2000;
 const TEMP       = 0.3;
 
-export default async function handler(req, res) {
+module.export default async function handler(req, res) {
   /* ── CORS ── */
   res.setHeader('Access-Control-Allow-Origin',  process.env.ALLOWED_ORIGIN || '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
