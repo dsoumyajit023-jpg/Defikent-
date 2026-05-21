@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "AI-powered bike comparison for Indian riders",
   "private": true,
+  "type": "module",
   "engines": { "node": ">=18.x" },
   "scripts": {
     "dev": "vercel dev",
