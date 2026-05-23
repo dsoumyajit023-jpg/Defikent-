@@ -58,20 +58,27 @@ document.getElementById('results')?.addEventListener('click', e => {
 
 /* ── Garage panel ── */
 const garagePanel = document.getElementById('garagePanel');
-document.getElementById('garageToggle')?.addEventListener('click', () => {
-  const open = garagePanel.classList.toggle('open');
+const garageOverlay = document.getElementById('garageOverlay');
+
+function openGarage() {
+  garagePanel.classList.add('open');
+  garageOverlay.style.display = 'block';
   renderGarage();
-  document.getElementById('garageToggle').setAttribute('aria-expanded', open);
-});
-document.getElementById('garageClose')?.addEventListener('click', () => garagePanel.classList.remove('open'));
-document.getElementById('garageOverlay')?.addEventListener('click', () => garagePanel.classList.remove('open'));
+}
+function closeGarage() {
+  garagePanel.classList.remove('open');
+  garageOverlay.style.display = 'none';
+}
+
+document.getElementById('garageClose')?.addEventListener('click', closeGarage);
+garageOverlay?.addEventListener('click', closeGarage);
 
 /* ── Bottom nav ── */
-document.getElementById('garageNavBtn')?.addEventListener('click', () => {
-  const panel = document.getElementById('garagePanel');
-  if (!panel) return;
-  panel.classList.toggle('open');
-  renderGarage();
+document.getElementById('garageNavBtn')?.addEventListener('click', openGarage);
+document.getElementById('homeNavBtn')?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+document.getElementById('suggestNavBtn')?.addEventListener('click', () => {
+  document.querySelector('[data-tab="suggest"]')?.click();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 document.getElementById('homeNavBtn')?.addEventListener('click',   () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 document.getElementById('suggestNavBtn')?.addEventListener('click', () => {
