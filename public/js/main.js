@@ -67,7 +67,12 @@ document.getElementById('garageClose')?.addEventListener('click', () => garagePa
 document.getElementById('garageOverlay')?.addEventListener('click', () => garagePanel.classList.remove('open'));
 
 /* ── Bottom nav ── */
-document.getElementById('garageNavBtn')?.addEventListener('click', () => document.getElementById('garageToggle').click());
+document.getElementById('garageNavBtn')?.addEventListener('click', () => {
+  const panel = document.getElementById('garagePanel');
+  if (!panel) return;
+  panel.classList.toggle('open');
+  renderGarage();
+});
 document.getElementById('homeNavBtn')?.addEventListener('click',   () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 document.getElementById('suggestNavBtn')?.addEventListener('click', () => {
   document.querySelector('[data-tab="suggest"]')?.click();
