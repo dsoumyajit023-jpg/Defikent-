@@ -229,9 +229,9 @@ input[type="text"]::placeholder{color:var(--n400);font-weight:400}
 
 /* ── Bikes grid ── */
 .bikes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.bike-card{border-radius:var(--r-lg);border:1.5px solid var(--border);background:var(--n50);padding:18px;position:relative;transition:border-color .2s,background .2s}
+.bike-card{border-radius:var(--r-lg);border:1.5px solid var(--border);background:var(--n50);padding:22px 18px 18px;position:relative;transition:border-color .2s,background .2s;margin-top:10px}
 .bike-card.filled{border-color:var(--accent);background:var(--accent-light)}
-.bike-card-label{font-size:11px;font-weight:700;color:var(--n400);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.bike-card-label{position:absolute;top:-10px;left:16px;background:var(--surface);padding:0 8px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
 .bike-card.filled .bike-card-label{color:var(--accent)}
 .bike-card input{background:transparent;font-size:14px}
 .bike-card.filled input{border-color:rgba(26,86,219,.25);background:rgba(255,255,255,.5)}
@@ -393,7 +393,7 @@ html.dark .verdict-text{color:var(--n600)}
 .rating-msg.show{opacity:1}
 
 /* ── Toast ── */
-#toastBar{position:fixed;bottom:82px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--n900);color:#fff;font-size:13px;font-weight:500;padding:12px 20px;border-radius:var(--r-md);box-shadow:var(--sh-lg);z-index:9000;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;white-space:nowrap;max-width:90vw}
+#toastBar{position:fixed;bottom:82px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--n900);color:#fff;font-size:13px;font-weight:500;padding:12px 20px;border-radius:var(--r-md);box-shadow:var(--sh-lg);z-index:9000;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;white-space:normal;max-width:88vw;text-align:center;word-break:break-word}
 #toastBar.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ── Sticky bar ── */
@@ -449,6 +449,10 @@ html.dark .verdict-text{color:var(--n600)}
   .moto-svg{width:160px;height:80px}
 }
 
-@media(min-width:601px){
-  .cost-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+@media(max-width:600px){
+  .cost-grid{grid-template-columns:1fr}
+  .cost-total{font-size:24px}
+  .ci-val{font-size:13px;word-break:break-word}
+  .cost-items{grid-template-columns:1fr 1fr;gap:6px}
+  .cost-card{padding:18px}
 }
