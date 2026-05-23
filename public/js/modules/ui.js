@@ -229,8 +229,10 @@ export function renderResults(data, isSuggest = false) {
     buildRatingWidget() +
     buildReset(isSuggest);
 
-  box.querySelector('#saveResultBtn')?.addEventListener('click', () => doSave(data));
-  box.querySelector('#shareBtn')?.addEventListener('click',     () => doShare(data));
+ const saveBtn = box.querySelector('#saveResultBtn');
+  const shareBtn = box.querySelector('#shareBtn');
+  if (saveBtn) saveBtn.addEventListener('click', () => doSave(data), { once: true });
+  if (shareBtn) shareBtn.addEventListener('click', () => doShare(data));
   initStickyBar(bikes, winner_index);
   initRating();
   box.scrollIntoView({ behavior: 'smooth', block: 'start' });
