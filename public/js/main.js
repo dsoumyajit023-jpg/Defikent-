@@ -4,7 +4,7 @@ import {
   initSliders, initBikeCards, initBudgetSlider, initTabs,
   resetAll, resetSuggest, renderGarage,
 } from './modules/ui.js';
-import { compareNow, profilenow, suggestNow } from './modules/compare.js';
+import { compareNow, profileNow, suggestNow } from './modules/compare.js';
 import { playHorn, setSoundEnabled, loadSoundPref } from './modules/sounds.js';
 import { CITIES } from './modules/data.js';
 
