@@ -4,7 +4,7 @@ import {
   initSliders, initBikeCards, initBudgetSlider, initTabs,
   resetAll, resetSuggest, renderGarage,
 } from './modules/ui.js';
-import { compareNow, suggestNow } from './modules/compare.js';
+import { compareNow, profilenow, suggestNow } from './modules/compare.js';
 import { playHorn, setSoundEnabled, loadSoundPref } from './modules/sounds.js';
 import { CITIES } from './modules/data.js';
 
@@ -44,6 +44,9 @@ window.addEventListener('load', () => setTimeout(playHorn, 600));
 
 /* ── Compare ── */
 document.getElementById('compareBtn')?.addEventListener('click', () => compareNow(comparePrefs));
+
+/* ── Profile ── */
+document.getElementById('profileBtn')?.addEventListener('click', () => profileNow());
 
 /* ── Suggest ── */
 document.getElementById('suggestBtn')?.addEventListener('click', () => suggestNow(suggestPrefs));
