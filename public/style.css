@@ -46,6 +46,62 @@
   --fd: 'DM Serif Display', Georgia, serif;
   --fb: 'DM Sans', -apple-system, sans-serif;
 }
+/* ── Dark mode complete fix ── */
+html.dark .section-heading{color:#edf0f4 !important}
+html.dark .chip-hint{color:#9aa5b8 !important}
+html.dark .chip{background:#1f2937;border-color:#2d3748;color:#c4ccd8}
+html.dark .chip.active{background:#edf0f4;border-color:#edf0f4;color:#0d1117}
+html.dark .slider-label{color:#9aa5b8}
+html.dark .slider-val{color:#edf0f4}
+html.dark .panel-title{color:#9aa5b8}
+html.dark .yn-q{color:#edf0f4}
+html.dark .yn-bike{color:#9aa5b8}
+html.dark .cost-bike{color:rgba(255,255,255,.6)}
+html.dark .spec-label-cell{color:#9aa5b8}
+html.dark .spec-table td{color:#c4ccd8}
+html.dark .spec-table th{border-bottom-color:#edf0f4;color:#9aa5b8}
+html.dark .verdict-label{color:#4176e8}
+html.dark .verdict-text{color:#c4ccd8 !important}
+html.dark .garage-title{color:#edf0f4}
+html.dark .garage-item-names{color:#edf0f4}
+html.dark .garage-item-date{color:#9aa5b8}
+html.dark .garage-empty{color:#9aa5b8}
+html.dark .hero-eyebrow{color:#6b7a92}
+html.dark .loading-label{color:#9aa5b8}
+html.dark .btn-ghost{background:#1f2937;color:#c4ccd8;border-color:#2d3748}
+html.dark .btn-ghost:hover{background:#2d3748;color:#edf0f4}
+html.dark .tab-btn{color:#9aa5b8}
+html.dark .tab-btn.active{background:#1f2937;color:#4176e8;border-color:#2d3748}
+html.dark .header-wordmark{color:#edf0f4}
+html.dark .header-sub{color:#6b7a92}
+html.dark .ctrl-btn{background:#1f2937;color:#c4ccd8;border-color:#2d3748}
+html.dark .bnav-btn{color:#6b7a92}
+html.dark .bnav-btn.active{color:#4176e8}
+html.dark .sticky-name{color:#edf0f4}
+html.dark .sticky-score{background:#1f2937;color:#9aa5b8}
+html.dark .diff-spec{color:#9aa5b8}
+html.dark .bike-card-label{color:#4176e8}
+html.dark .step-num{color:#ffffff}
+html.dark .step-pill{background:#1f2937;color:#edf0f4}
+html.dark .compare-hero{background:#0d1117;border:1px solid #2d3748}
+html.dark .bike-hero-card{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14)}
+html.dark .bike-hero-card.is-winner{background:rgba(26,86,219,.28);border-color:rgba(65,118,232,.55)}
+html.dark .bike-hero-name{color:#ffffff !important}
+html.dark .score-number{color:#ffffff !important}
+html.dark .hero-reason{color:#9aa5b8}
+html.dark .hero-reason strong{color:#ffffff}
+html.dark .panel{background:#111827;border-color:#2d3748}
+html.dark .diff-row{background:#1f2937;border-color:#2d3748}
+html.dark .yn-row{background:#1f2937;border-color:#2d3748}
+html.dark .card{background:#111827;border-color:#2d3748}
+html.dark input[type="text"],html.dark select{background:#1f2937;color:#edf0f4;border-color:#2d3748}
+html.dark input[type="text"]::placeholder{color:#6b7a92}
+html.dark .bike-card{background:#1f2937;border-color:#2d3748}
+html.dark .bike-card.filled{background:rgba(26,86,219,.18);border-color:#4176e8}
+html.dark .garage-item{background:#1f2937;border-color:#2d3748}
+html.dark .verdict-card{background:rgba(26,86,219,.15);border-color:rgba(65,118,232,.25)}
+html.dark .tab-bar{background:#111827;border-color:#2d3748}
+html.dark .bike-card-label{background:#111827}
 
 
 /* ── Reset ─────────────────────────────────────────────────────── */
@@ -441,60 +497,4 @@ html.dark .verdict-text{color:var(--n600)}
   .cost-items{grid-template-columns:1fr 1fr;gap:6px}
   .cost-card{padding:18px}
 }
-/* ── Dark mode complete fix ── */
-html.dark .section-heading{color:#edf0f4 !important}
-html.dark .chip-hint{color:#9aa5b8 !important}
-html.dark .chip{background:#1f2937;border-color:#2d3748;color:#c4ccd8}
-html.dark .chip.active{background:#edf0f4;border-color:#edf0f4;color:#0d1117}
-html.dark .slider-label{color:#9aa5b8}
-html.dark .slider-val{color:#edf0f4}
-html.dark .panel-title{color:#9aa5b8}
-html.dark .yn-q{color:#edf0f4}
-html.dark .yn-bike{color:#9aa5b8}
-html.dark .cost-bike{color:rgba(255,255,255,.6)}
-html.dark .spec-label-cell{color:#9aa5b8}
-html.dark .spec-table td{color:#c4ccd8}
-html.dark .spec-table th{border-bottom-color:#edf0f4;color:#9aa5b8}
-html.dark .verdict-label{color:#4176e8}
-html.dark .verdict-text{color:#c4ccd8 !important}
-html.dark .garage-title{color:#edf0f4}
-html.dark .garage-item-names{color:#edf0f4}
-html.dark .garage-item-date{color:#9aa5b8}
-html.dark .garage-empty{color:#9aa5b8}
-html.dark .hero-eyebrow{color:#6b7a92}
-html.dark .loading-label{color:#9aa5b8}
-html.dark .btn-ghost{background:#1f2937;color:#c4ccd8;border-color:#2d3748}
-html.dark .btn-ghost:hover{background:#2d3748;color:#edf0f4}
-html.dark .tab-btn{color:#9aa5b8}
-html.dark .tab-btn.active{background:#1f2937;color:#4176e8;border-color:#2d3748}
-html.dark .header-wordmark{color:#edf0f4}
-html.dark .header-sub{color:#6b7a92}
-html.dark .ctrl-btn{background:#1f2937;color:#c4ccd8;border-color:#2d3748}
-html.dark .bnav-btn{color:#6b7a92}
-html.dark .bnav-btn.active{color:#4176e8}
-html.dark .sticky-name{color:#edf0f4}
-html.dark .sticky-score{background:#1f2937;color:#9aa5b8}
-html.dark .diff-spec{color:#9aa5b8}
-html.dark .bike-card-label{color:#4176e8}
-html.dark .step-num{color:#ffffff}
-html.dark .step-pill{background:#1f2937;color:#edf0f4}
-html.dark .compare-hero{background:#0d1117;border:1px solid #2d3748}
-html.dark .bike-hero-card{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14)}
-html.dark .bike-hero-card.is-winner{background:rgba(26,86,219,.28);border-color:rgba(65,118,232,.55)}
-html.dark .bike-hero-name{color:#ffffff !important}
-html.dark .score-number{color:#ffffff !important}
-html.dark .hero-reason{color:#9aa5b8}
-html.dark .hero-reason strong{color:#ffffff}
-html.dark .panel{background:#111827;border-color:#2d3748}
-html.dark .diff-row{background:#1f2937;border-color:#2d3748}
-html.dark .yn-row{background:#1f2937;border-color:#2d3748}
-html.dark .card{background:#111827;border-color:#2d3748}
-html.dark input[type="text"],html.dark select{background:#1f2937;color:#edf0f4;border-color:#2d3748}
-html.dark input[type="text"]::placeholder{color:#6b7a92}
-html.dark .bike-card{background:#1f2937;border-color:#2d3748}
-html.dark .bike-card.filled{background:rgba(26,86,219,.18);border-color:#4176e8}
-html.dark .garage-item{background:#1f2937;border-color:#2d3748}
-html.dark .verdict-card{background:rgba(26,86,219,.15);border-color:rgba(65,118,232,.25)}
-html.dark .tab-bar{background:#111827;border-color:#2d3748}
-html.dark .bike-card-label{background:#111827}
 
