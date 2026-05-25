@@ -6,14 +6,17 @@ import { playClick, playHeartPop, playChime, playNotify } from './sounds.js';
 
 /* ── Splash ──────────────────────────────────────────────────────────────── */
 export function initSplash() {
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      const s = document.getElementById('splash');
-      if (!s) return;
-      s.classList.add('hide');
-      setTimeout(() => s.remove(), CONFIG.SPLASH_FADE);
-    }, CONFIG.SPLASH_DELAY);
-  });
+  const hide = () => {
+    const s = document.getElementById('splash');
+    if (!s) return;
+    s.classList.add('hide');
+    setTimeout(() => s.remove(), CONFIG.SPLASH_FADE);
+  };
+  if (document.readyState === 'complete') {
+    setTimeout(hide, CONFIG.SPLASH_DELAY);
+  } else {
+    window.addEventListener('load', () => setTimeout(hide, CONFIG.SPLASH_DELAY));
+  }
 }
 
 /* ── Dark mode ───────────────────────────────────────────────────────────── */
