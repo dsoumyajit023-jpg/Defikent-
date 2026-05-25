@@ -108,3 +108,50 @@ Return ONLY valid JSON, no markdown fences, no text outside JSON:
   "verdict": "2-3 sentence recommendation."
 }`;
 }
+export function buildProfilePrompt({ bike, location }) {
+  return `You are a professional Indian motorcycle expert. Give a complete profile of: ${bike} for a rider in ${location || 'India'}.
+
+Return ONLY valid JSON, no markdown fences, no text outside JSON:
+{
+  "bikes": [
+    {
+      "name": "Full Bike Name",
+      "specs": {
+        "engine": "...", "power": "...", "torque": "...", "mileage": "...",
+        "fuel_tank": "...", "tyre_front": "...", "tyre_rear": "...",
+        "weight": "...", "seat_height": "...", "ground_clearance": "...",
+        "price_ex": "...", "launch_date": "Month YYYY"
+      },
+      "score": 80,
+      "emi": "Rs X,XXX/month (3yr)",
+      "fuel_cost_month": "Rs X,XXX",
+      "service_cost_year": "Rs X,XXX",
+      "insurance_year": "Rs X,XXX",
+      "total_monthly_cost": "Rs X,XXX",
+      "salary_needed": "Rs XX,XXX/month recommended",
+      "parts_availability": "Excellent/Good/Average",
+      "city_traffic_score": "X/10",
+      "resale_value": "Good/Average/Poor",
+      "key_strength": "one-line strength",
+      "key_weakness": "one-line weakness"
+    }
+  ],
+  "winner_index": 0,
+  "winner_reason": "one line summary of this bike",
+  "differences": [
+    {"spec": "Best For", "verdict": "..."},
+    {"spec": "Avoid If", "verdict": "..."},
+    {"spec": "Rivals", "verdict": "..."},
+    {"spec": "Value", "verdict": "..."},
+    {"spec": "Verdict", "verdict": "..."}
+  ],
+  "yes_no": [
+    {"question": "Good for daily city commute?", "yes_index": 0},
+    {"question": "Suitable for long highway rides?", "yes_index": 0},
+    {"question": "Easy to maintain locally?", "yes_index": 0},
+    {"question": "Good resale value after 3 years?", "yes_index": 0},
+    {"question": "Worth the price in ${location || 'India'}?", "yes_index": 0}
+  ],
+  "verdict": "2-3 sentence honest review of this bike."
+}`;
+}
