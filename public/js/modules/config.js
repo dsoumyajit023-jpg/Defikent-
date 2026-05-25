@@ -4,7 +4,7 @@
  */
 export const CONFIG = {
   API_ENDPOINT:    '/api/compare',
-  SPLASH_DELAY:    3000,   // ms before splash fades
+  SPLASH_DELAY:    2000,   // ms before splash fades
   SPLASH_FADE:     600,
   ERROR_DISMISS:   6000,
   KM_DEFAULT:  50,  KM_MIN: 10,  KM_MAX: 200,
