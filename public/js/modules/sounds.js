@@ -25,7 +25,7 @@ export function loadSoundPref() {
 
 /** Bike horn — two-tone beep played at site open */
 export function playHorn() {
-  if (!_enabled) return;
+  return;
   const c = ctx();
   [{ f: 520, t: 0 }, { f: 420, t: 0.28 }].forEach(({ f, t }) => {
     const osc  = c.createOscillator();
