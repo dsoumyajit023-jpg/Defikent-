@@ -117,7 +117,7 @@ export function initTabs() {
 /* ── Error ───────────────────────────────────────────────────────────────── */
 export function showError(msg) {
   const el = document.getElementById('errorBox'); if (!el) return;
-  el.innerHTML = `<strong>Oops! No bike found.</strong> ${msg} — we respect your search. Please try again.`;
+  el.innerHTML = `<strong>Oops! No bike found.</strong> ${msg} — Please wait a few minutes before you try again later!.`;
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), CONFIG.ERROR_DISMISS);
 }
@@ -293,11 +293,10 @@ function buildHero(bikes, wi, reason) {
       </div>`;
   }).join('<div class="vs-col"><span class="vs-text">vs</span></div>');
 
-  return `
+return `
     <div class="compare-hero result-block">
-      <div class="hero-eyebrow">AI Comparison Result</div>
-      <div class="compare-bikes-row" style="grid-template-columns:${cols}">${cards}</div>
-      <div class="hero-reason">Top pick rationale: <strong>${reason}</strong></div>
+      <div class="compare-bikes-row" style="grid-template-columns:${cols};justify-items:center">${cards}</div>
+      ${reason ? `<div class="hero-reason">Top pick rationale: <strong>${reason}</strong></div>` : ''}
     </div>`;
 }
 
