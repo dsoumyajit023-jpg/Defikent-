@@ -19,23 +19,6 @@ export function initSplash() {
   }
 }
 
-/* ── Dark mode ───────────────────────────────────────────────────────────── */
-export function initDarkMode() {
-  const btn = document.getElementById('darkToggle');
-  if (localStorage.getItem('dk_dark') === '1') document.documentElement.classList.add('dark');
-  syncDarkBtn(btn);
-  btn?.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('dk_dark', document.documentElement.classList.contains('dark') ? '1' : '0');
-    syncDarkBtn(btn);
-    playClick();
-  });
-}
-function syncDarkBtn(btn) {
-  if (!btn) return;
-  btn.textContent = document.documentElement.classList.contains('dark') ? 'Light Mode' : 'Dark Mode';
-}
-
 /* ── Sound toggle ────────────────────────────────────────────────────────── */
 export function initSoundToggle(setSoundEnabled, loadSoundPref) {
   const btn = document.getElementById('soundToggle');
