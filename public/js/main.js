@@ -1,5 +1,5 @@
 import {
-  initSplash, initDarkMode, initSoundToggle,
+  initSplash, initSoundToggle,
   initLocationDropdowns, initPreferenceChips,
   initSliders, initBikeCards, initBudgetSlider, initTabs,
   resetAll, resetSuggest, renderGarage,
@@ -10,7 +10,6 @@ import { CITIES } from './modules/data.js';
 
 /* ── Boot ── */
 initSplash();
-initDarkMode();
 initSoundToggle(setSoundEnabled, loadSoundPref);
 initLocationDropdowns();
 initSliders();
