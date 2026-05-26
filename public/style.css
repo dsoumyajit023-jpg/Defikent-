@@ -441,4 +441,5 @@ html.dark .verdict-text{color:var(--n600)}
   .cost-items{grid-template-columns:1fr 1fr;gap:6px}
   .cost-card{padding:18px}
 }
-
+.compare-bikes-row{justify-content:center}
+.compare-hero{text-align:center}
