@@ -1,4 +1,3 @@
-
 import { CONFIG, SPEC_KEYS, SPEC_TOOLTIPS, META_KEYS, META_TOOLTIPS, PREFERENCES } from './config.js';
 import { CITIES, STATES } from './data.js';
 import { saveToGarage, getGarage, deleteFromGarage } from './garage.js';
@@ -129,7 +128,6 @@ export function setLoading(on) {
   if (on) {
     ld.classList.add('show');
     rs.classList.remove('show'); rs.innerHTML = '';
-    // After 2 s switch from wheel to skeleton
     ld._skTimer = setTimeout(() => {
       if (!ld.classList.contains('show')) return;
       ld.querySelector('.wheel-spinner').style.display = 'none';
@@ -200,12 +198,12 @@ export function renderGarage() {
 }
 
 /* ── Render results ──────────────────────────────────────────────────────── */
-export function renderResults(data, isSuggest = false) {
+export function renderResults(data, mode = 'compare') {
   const { bikes, winner_index, winner_reason, yes_no, verdict, differences } = data;
   const box = document.getElementById('results');
   box.classList.add('show');
   box.innerHTML =
-    buildHero(bikes, winner_index, winner_reason) +
+    buildHero(bikes, winner_index, winner_reason, mode) +
     buildDifferences(differences) +
     buildSpecs(bikes, winner_index) +
     buildCosts(bikes, winner_index) +
@@ -213,9 +211,9 @@ export function renderResults(data, isSuggest = false) {
     buildVerdict(verdict) +
     buildActions() +
     buildRatingWidget() +
-    buildReset(isSuggest);
+    buildReset(mode);
 
- const saveBtn = box.querySelector('#saveResultBtn');
+  const saveBtn = box.querySelector('#saveResultBtn');
   const shareBtn = box.querySelector('#shareBtn');
   if (saveBtn) saveBtn.addEventListener('click', () => doSave(data), { once: true });
   if (shareBtn) shareBtn.addEventListener('click', () => doShare(data));
@@ -234,8 +232,8 @@ function initStickyBar(bikes, wi) {
       <span class="sticky-score">${b.score}/100</span>
     </div>`).join('<span class="sticky-vs">vs</span>');
   const results = document.getElementById('results');
-const hero = document.querySelector('.compare-hero');
-new IntersectionObserver(([e]) => bar.classList.toggle('visible', !e.isIntersecting), { threshold: 0.1 })
+  const hero = document.querySelector('.compare-hero');
+  new IntersectionObserver(([e]) => bar.classList.toggle('visible', !e.isIntersecting), { threshold: 0.1 })
     .observe(hero || results);
 }
 
@@ -269,7 +267,7 @@ function doShare(data) {
 
 /* ════════════════════════ HTML builders ════════════════════════ */
 
-function buildHero(bikes, wi, reason) {
+function buildHero(bikes, wi, reason, mode) {
   const cols = bikes.length === 3 ? '1fr 44px 1fr 44px 1fr' : '1fr 44px 1fr';
   const cards = bikes.map((b, i) => {
     const isW = i === wi;
@@ -277,7 +275,7 @@ function buildHero(bikes, wi, reason) {
     const off = C - (b.score / 100) * C;
     return `
       <div class="bike-hero-card${isW ? ' is-winner' : ''}">
-        ${isW ? '<div class="winner-label">Top Pick</div>' : ''}
+        ${isW && mode !== 'profile' ? '<div class="winner-label">Top Pick</div>' : ''}
         <div class="bike-hero-name">${b.name}</div>
         <div class="score-dial">
           <svg viewBox="0 0 64 64" fill="none">
@@ -294,7 +292,7 @@ function buildHero(bikes, wi, reason) {
       </div>`;
   }).join('<div class="vs-col"><span class="vs-text">vs</span></div>');
 
-return `
+  return `
     <div class="compare-hero result-block">
       <div class="compare-bikes-row" style="grid-template-columns:${cols};justify-items:center">${cards}</div>
       ${reason ? `<div class="hero-reason">Top pick rationale: <strong>${reason}</strong></div>` : ''}
@@ -432,10 +430,10 @@ function buildRatingWidget() {
     </div>`;
 }
 
-function buildReset(isSuggest) {
+function buildReset(mode) {
   return `
     <div style="text-align:center;margin:24px 0 12px">
-      <button class="btn btn-ghost" id="resetBtn">${isSuggest ? 'Try Another Budget' : 'Compare Again'}</button>
+      <button class="btn btn-ghost" id="resetBtn">${mode === 'suggest' ? 'Try Another Budget' : mode === 'profile' ? 'Explore Another Bike' : 'Compare Again'}</button>
     </div>`;
 }
 
@@ -463,3 +461,4 @@ export function resetSuggest() {
   const cp = document.getElementById('suggestCustomPref'); if(cp) cp.value = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
