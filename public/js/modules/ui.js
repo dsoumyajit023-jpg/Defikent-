@@ -234,8 +234,9 @@ function initStickyBar(bikes, wi) {
       <span class="sticky-score">${b.score}/100</span>
     </div>`).join('<span class="sticky-vs">vs</span>');
   const results = document.getElementById('results');
-  new IntersectionObserver(([e]) => bar.classList.toggle('visible', !e.isIntersecting), { threshold: 0 })
-    .observe(results);
+const hero = document.querySelector('.compare-hero');
+new IntersectionObserver(([e]) => bar.classList.toggle('visible', !e.isIntersecting), { threshold: 0.1 })
+    .observe(hero || results);
 }
 
 /* ── Save ────────────────────────────────────────────────────────────────── */
