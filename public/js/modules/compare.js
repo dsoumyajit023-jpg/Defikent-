@@ -21,7 +21,7 @@ export async function compareNow(selectedPrefs) {
   setLoading(true);
   try {
     const result = await fetchComparison(buildPrompt({ bikes, location, kmDay, salary, prefList, customPref }));
-    renderResults(result, false);
+    renderResults(result, 'profile');
   } catch (err) {
     showError(err.message);
     console.error('[Defikent] compare error:', err);
