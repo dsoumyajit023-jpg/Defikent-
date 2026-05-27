@@ -446,10 +446,16 @@ html.dark .verdict-text{color:var(--n600)}
 .bike-hero-card{flex:0 0 auto;width:220px}
 .spec-label-cell{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .tip{flex-shrink:0;margin-left:auto}
-#stickyBar{top:54px}
 @media(max-width:600px){
-  #stickyBar{top:54px;padding:6px 14px;gap:10px}
-  .sticky-name{font-size:11px}
-  .sticky-score{font-size:10px;padding:2px 6px}
-  .sticky-vs{font-size:10px}
+  #stickyBar{
+    top:54px;
+    padding:8px 14px;
+    gap:12px;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+  }
+  .sticky-name{font-size:12px;white-space:nowrap}
+  .sticky-score{font-size:11px;padding:2px 7px}
+  .sticky-vs{font-size:11px}
+  main{padding-top:12px}
 }
