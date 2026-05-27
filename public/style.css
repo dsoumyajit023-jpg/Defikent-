@@ -448,10 +448,13 @@ html.dark .verdict-text{color:var(--n600)}
 .tip{flex-shrink:0;margin-left:auto}
 @media(max-width:600px){
   #stickyBar{
-    top:108px;
-    padding:6px 14px;
-    gap:10px;
+    top:auto;
+    bottom:62px;
+    transform:translateY(100%);
+    border-top:1px solid var(--border);
+    border-bottom:none;
   }
-  .sticky-name{font-size:12px;white-space:nowrap}
-  .sticky-score{font-size:11px;padding:2px 6px}
+  #stickyBar.visible{
+    transform:translateY(0);
+  }
 }
