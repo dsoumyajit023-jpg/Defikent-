@@ -87,3 +87,17 @@ document.getElementById('suggestNavBtn')?.addEventListener('click', () => {
   document.querySelector('[data-tab="suggest"]')?.click();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+/* ── Info popup ── */
+document.getElementById('infoToggle')?.addEventListener('click', () => {
+  document.getElementById('infoPopup')?.classList.toggle('show');
+});
+document.getElementById('infoClose')?.addEventListener('click', () => {
+  document.getElementById('infoPopup')?.classList.remove('show');
+});
+document.addEventListener('click', (e) => {
+  const popup = document.getElementById('infoPopup');
+  const btn = document.getElementById('infoToggle');
+  if (popup?.classList.contains('show') && !popup.contains(e.target) && e.target !== btn) {
+    popup.classList.remove('show');
+  }
+});
