@@ -163,62 +163,28 @@ export function showToast(msg) {
 export function initRating() {
   const wrap = document.getElementById('starRating'); if (!wrap) return;
   const stars = wrap.querySelectorAll('.star');
-  const STORE_BASE = 'https://storegit.pages.dev';
-  const STORE_KEY  = 'sgk_7zLQZFEc_tLP1zyw2U4Bni2ZI_jeI03PdPgvXf5mP4k';
-  const FILE_NAME  = 'defikent_ratings.json';
 
-  // Load existing average from StoreGit
   async function loadAverage() {
     try {
-      const text = await fetch(
-        `${STORE_BASE}/api/download?name=${FILE_NAME}`,
-        { headers: { 'X-API-Key': STORE_KEY } }
-      ).then(r => r.ok ? r.text() : null);
-      if (!text) return null;
-      return JSON.parse(text);
+      const data = await fetch('/api/rating').then(r => r.json());
+      return data;
     } catch { return null; }
   }
 
-  // Save new rating to StoreGit
   async function saveRating(star) {
     try {
-      // Get existing data
-      const existing = await loadAverage() || { ratings: [], count: 0, average: 0 };
-      // Get user IP via public API
       const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json()).catch(() => ({ ip: 'unknown' }));
-      const ip = ipData.ip;
-      // Remove previous rating from this IP
-      existing.ratings = existing.ratings.filter(r => r.ip !== ip);
-      // Add new rating
-      existing.ratings.push({ ip, star, time: new Date().toISOString() });
-      // Recalculate average
-      existing.count = existing.ratings.length;
-      existing.average = (existing.ratings.reduce((a, b) => a + b.star, 0) / existing.count).toFixed(1);
-      // Save back
-      const content = btoa(unescape(encodeURIComponent(JSON.stringify(existing))));
-      // Delete old file first
-      const files = await fetch(`${STORE_BASE}/api/files`, { headers: { 'X-API-Key': STORE_KEY } }).then(r => r.json()).catch(() => []);
-      const old = files.find(f => f.name === FILE_NAME);
-      if (old) {
-        await fetch(`${STORE_BASE}/api/delete`, {
-          method: 'DELETE',
-          headers: { 'X-API-Key': STORE_KEY, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: FILE_NAME, sha: old.sha })
-        });
-      }
-      // Upload new
-      await fetch(`${STORE_BASE}/api/upload`, {
+      const data = await fetch('/api/rating', {
         method: 'POST',
-        headers: { 'X-API-Key': STORE_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: FILE_NAME, content })
-      });
-      return existing.average;
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ star, ip: ipData.ip })
+      }).then(r => r.json());
+      return data.average;
     } catch { return null; }
   }
 
   let picked = parseInt(localStorage.getItem('dk_rating') || '0');
 
-  // Show average rating if exists
   loadAverage().then(data => {
     if (data && data.count > 0) {
       const avg = document.getElementById('ratingAvg');
@@ -227,6 +193,8 @@ export function initRating() {
   });
 
   paintStars(stars, picked - 1);
+  if (picked > 0) stars.forEach(s => s.disabled = true);
+
   stars.forEach((s, i) => {
     s.addEventListener('mouseenter', () => paintStars(stars, i));
     s.addEventListener('mouseleave', () => paintStars(stars, picked - 1));
@@ -238,18 +206,14 @@ export function initRating() {
       const m = document.getElementById('ratingMsg');
       if (m) { m.textContent = msgs[picked]; m.classList.add('show'); }
       localStorage.setItem('dk_rating', picked);
-      // Disable stars after rating
       stars.forEach(s => s.disabled = true);
-      // Save to StoreGit
       const avg = await saveRating(picked);
       const avgEl = document.getElementById('ratingAvg');
       if (avgEl && avg) avgEl.textContent = `Average: ${avg} / 5`;
     });
   });
-
-  // Disable stars if already rated
-  if (picked > 0) stars.forEach(s => s.disabled = true);
 }
+function paintStars(stars, upTo) { stars.forEach((s, i) => s.classList.toggle('active', i <= upTo)); }
 /* ── Garage ──────────────────────────────────────────────────────────────── */
 export function renderGarage() {
   const wrap = document.getElementById('garageList'); if (!wrap) return;
