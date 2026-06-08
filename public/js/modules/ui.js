@@ -83,7 +83,25 @@ function wire(sliderId, valId, min, max, def, fmt, step) {
 
 /* ── Bike cards ──────────────────────────────────────────────────────────── */
 export function initBikeCards() {
-  [0, 1, 2].forEach(i => document.getElementById(`bike${i}`)?.addEventListener('input', () => markFilled(i)));
+  [0, 1, 2].forEach(i => {
+    const input = document.getElementById(`bike${i}`);
+    if (!input) return;
+    input.addEventListener('input', () => {
+      markFilled(i);
+      // Clear results when user edits any bike name
+      const results = document.getElementById('results');
+      if (results) { results.classList.remove('show'); results.innerHTML = ''; }
+      const stickyBar = document.getElementById('stickyBar');
+      if (stickyBar) stickyBar.classList.remove('visible');
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('compareBtn')?.click();
+      }
+    });
+  });
+  
   document.getElementById('addThirdBtn')?.addEventListener('click', () => {
     document.getElementById('thirdBikeWrap').style.display = 'block';
     document.getElementById('addThirdBtn').style.display = 'none';
@@ -498,4 +516,16 @@ export function resetSuggest() {
   const cp = document.getElementById('suggestCustomPref'); if(cp) cp.value = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
+// Profile input enter key
+document.getElementById('profileBike')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('profileBtn')?.click();
+  }
+});
+document.getElementById('profileBike')?.addEventListener('input', () => {
+  const results = document.getElementById('results');
+  if (results) { results.classList.remove('show'); results.innerHTML = ''; }
+  const stickyBar = document.getElementById('stickyBar');
+  if (stickyBar) stickyBar.classList.remove('visible');
+});
