@@ -531,3 +531,18 @@ document.getElementById('profileBike')?.addEventListener('input', () => {
   const stickyBar = document.getElementById('stickyBar');
   if (stickyBar) stickyBar.classList.remove('visible');
 });
+// Suggest mode - clear results on any input change
+document.getElementById('suggestCustomPref')?.addEventListener('input', () => {
+  const results = document.getElementById('results');
+  if (results) { results.classList.remove('show'); results.innerHTML = ''; }
+  const stickyBar = document.getElementById('stickyBar');
+  if (stickyBar) stickyBar.classList.remove('visible');
+});
+
+// Budget slider - clear results on change
+document.getElementById('budgetSlider')?.addEventListener('input', () => {
+  const results = document.getElementById('results');
+  if (results) { results.classList.remove('show'); results.innerHTML = ''; }
+  const stickyBar = document.getElementById('stickyBar');
+  if (stickyBar) stickyBar.classList.remove('visible');
+});
