@@ -98,6 +98,12 @@ export function initBikeCards() {
       if (e.key === 'Enter') {
         e.preventDefault();
         document.getElementById('compareBtn')?.click();
+        document.getElementById('suggestCustomPref')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('suggestBtn')?.click();
+  }
+});
       }
     });
   });
@@ -531,6 +537,7 @@ document.getElementById('profileBike')?.addEventListener('input', () => {
   const stickyBar = document.getElementById('stickyBar');
   if (stickyBar) stickyBar.classList.remove('visible');
 });
+
 // Suggest mode - clear results on any input change
 document.getElementById('suggestCustomPref')?.addEventListener('input', () => {
   const results = document.getElementById('results');
