@@ -94,20 +94,21 @@ export function initBikeCards() {
       const stickyBar = document.getElementById('stickyBar');
       if (stickyBar) stickyBar.classList.remove('visible');
     });
-    input.addEventListener('keydown', (e) => {
+  input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         document.getElementById('compareBtn')?.click();
-        document.getElementById('suggestCustomPref')?.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    document.getElementById('suggestBtn')?.click();
-  }
-});
       }
     });
   });
-  
+
+  // Suggest mode enter key
+  document.getElementById('suggestCustomPref')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('suggestBtn')?.click();
+    }
+  });
   document.getElementById('addThirdBtn')?.addEventListener('click', () => {
     document.getElementById('thirdBikeWrap').style.display = 'block';
     document.getElementById('addThirdBtn').style.display = 'none';
