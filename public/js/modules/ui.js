@@ -279,7 +279,9 @@ export function renderResults(data, mode = 'compare') {
   if (shareBtn) shareBtn.addEventListener('click', () => doShare(data));
   initStickyBar(bikes, winner_index);
   initRating();
+setTimeout(() => {
   box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}, 100);
 }
 
 /* ── Sticky comparison bar ───────────────────────────────────────────────── */
