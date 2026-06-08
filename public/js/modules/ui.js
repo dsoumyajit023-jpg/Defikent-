@@ -109,6 +109,13 @@ export function initTabs() {
       btn.classList.add('active');
       document.getElementById(`tab-${btn.dataset.tab}`)?.classList.add('active');
       playClick();
+      // Clear results and sticky bar when switching tabs
+      const results = document.getElementById('results');
+      if (results) { results.classList.remove('show'); results.innerHTML = ''; }
+      const stickyBar = document.getElementById('stickyBar');
+      if (stickyBar) stickyBar.classList.remove('visible');
+      const errorBox = document.getElementById('errorBox');
+      if (errorBox) errorBox.classList.remove('show');
     });
   });
 }
