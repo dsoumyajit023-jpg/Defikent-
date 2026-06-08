@@ -540,11 +540,42 @@ document.getElementById('profileBike')?.addEventListener('input', () => {
 });
 
 // Suggest mode - clear results on any input change
+// Suggest mode - clear results on any input change
 document.getElementById('suggestCustomPref')?.addEventListener('input', () => {
   const results = document.getElementById('results');
   if (results) { results.classList.remove('show'); results.innerHTML = ''; }
   const stickyBar = document.getElementById('stickyBar');
   if (stickyBar) stickyBar.classList.remove('visible');
+});
+
+// Budget slider - clear results on change
+document.getElementById('budgetSlider')?.addEventListener('input', () => {
+  const results = document.getElementById('results');
+  if (results) { results.classList.remove('show'); results.innerHTML = ''; }
+  const stickyBar = document.getElementById('stickyBar');
+  if (stickyBar) stickyBar.classList.remove('visible');
+});
+
+// All tabs enter key
+document.getElementById('tab-suggest')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('suggestBtn')?.click();
+  }
+});
+
+document.getElementById('tab-profile')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('profileBtn')?.click();
+  }
+});
+
+document.getElementById('tab-compare')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('compareBtn')?.click();
+  }
 });
 
 // Budget slider - clear results on change
