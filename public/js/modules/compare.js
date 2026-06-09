@@ -21,7 +21,7 @@ export async function compareNow(selectedPrefs) {
   setLoading(true);
   try {
     const result = await fetchComparison(buildPrompt({ bikes, location, kmDay, salary, prefList, customPref }));
-    renderResults(result, 'profile');
+    renderResults(result, 'compare');
   } catch (err) {
     showError(err.message);
     console.error('[Defikent] compare error:', err);
@@ -41,7 +41,7 @@ export async function suggestNow(selectedPrefs) {
   setLoading(true);
   try {
     const result = await fetchComparison(buildSuggestPrompt({ budget, prefList, location, customPref }));
-    renderResults(result, true);
+   renderResults(result, 'suggest'); 
   } catch (err) {
     showError(err.message);
     console.error('[Defikent] suggest error:', err);
@@ -58,7 +58,7 @@ export async function profileNow() {
   setLoading(true);
   try {
     const result = await fetchComparison(buildProfilePrompt({ bike, location }));
-    renderResults(result, false);
+    renderResults(result, 'profile');
   } catch (err) {
     showError(err.message);
     console.error('[Defikent] profile error:', err);
