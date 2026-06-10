@@ -38,9 +38,6 @@ if (suggestStateEl) {
 const comparePrefs = initPreferenceChips('prefChips');
 const suggestPrefs = initPreferenceChips('suggestPrefChips');
 
-/* ── Horn on site open ── */
-window.addEventListener('load', () => setTimeout(playHorn, 600));
-
 /* ── Compare ── */
 document.getElementById('compareBtn')?.addEventListener('click', () => compareNow(comparePrefs));
 
