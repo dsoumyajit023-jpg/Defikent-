@@ -470,4 +470,4 @@ html.dark .verdict-text{color:var(--n600)}
 .info-popup.show{display:block;animation:fadeUp .25s ease both}
 .info-popup strong{color:var(--accent)}
 .info-popup em{color:var(--muted);font-style:italic}
-.info-close{position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:14px;color:var(--muted)}
+.info-close{position:fixed;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:14px;color:var(--muted)}
