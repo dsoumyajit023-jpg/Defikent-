@@ -1,6 +1,5 @@
 import { CONFIG, SPEC_KEYS, SPEC_TOOLTIPS, META_KEYS, META_TOOLTIPS, PREFERENCES } from './config.js';
 import { CITIES, STATES } from './data.js';
-import { saveToGarage, getGarage, deleteFromGarage } from './garage.js';
 import { playClick, playHeartPop, playChime, playNotify } from './sounds.js';
 
 /* ── Splash ──────────────────────────────────────────────────────────────── */
@@ -246,21 +245,6 @@ export function initRating() {
   });
 }
 function paintStars(stars, upTo) { stars.forEach((s, i) => s.classList.toggle('active', i <= upTo)); }
-/* ── Garage ──────────────────────────────────────────────────────────────── */
-export function renderGarage() {
-  const wrap = document.getElementById('garageList'); if (!wrap) return;
-  const items = getGarage();
-  if (!items.length) { wrap.innerHTML = '<p class="garage-empty">Your garage is empty. Save a comparison to see it here.</p>'; return; }
-  wrap.innerHTML = items.map(it => `
-    <div class="garage-item" data-id="${it.id}">
-      <div class="garage-item-names">${it.bikeNames || 'Comparison'}</div>
-      <div class="garage-item-date">${it.savedAt}</div>
-      <div class="garage-item-actions">
-        <button class="btn btn-ghost btn-sm garage-del" data-id="${it.id}" style="color:var(--red)">Delete</button>
-      </div>
-    </div>`).join('');
-  wrap.querySelectorAll('.garage-del').forEach(b => b.addEventListener('click', () => {
-    deleteFromGarage(Number(b.dataset.id)); renderGarage(); playClick();
   }));
 }
 
@@ -305,17 +289,6 @@ bar.style.borderBottom = '';
 new IntersectionObserver(([e]) => bar.classList.toggle('visible', !e.isIntersecting), { threshold: 0.1 })
     .observe(hero || results);
 }
-
-/* ── Save ────────────────────────────────────────────────────────────────── */
-function doSave(data) {
-  const entry = saveToGarage({ bikeNames: data.bikes.map(b => b.name).join(' vs '), data });
-  playHeartPop();
-  const btn = document.getElementById('saveResultBtn');
-  if (btn) { btn.classList.add('heart-pop'); setTimeout(() => btn.classList.remove('heart-pop'), 700); }
-  showToast(`Added to My Garage — "${entry.bikeNames}"`);
-  renderGarage();
-}
-
 /* ── Share ───────────────────────────────────────────────────────────────── */
 function doShare(data) {
   const payload = encodeURIComponent(JSON.stringify({
