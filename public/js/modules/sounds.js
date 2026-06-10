@@ -1,8 +1,3 @@
-/**
- * sounds.js — All sounds generated via Web Audio API.
- * No external audio files needed.
- */
-
 let _ctx = null;
 let _enabled = true;
 
@@ -23,9 +18,8 @@ export function loadSoundPref() {
   return _enabled;
 }
 
-/** Bike horn — two-tone beep played at site open */
 export function playHorn() {
-  return;
+  if (!_enabled) return;
   const c = ctx();
   [{ f: 520, t: 0 }, { f: 420, t: 0.28 }].forEach(({ f, t }) => {
     const osc  = c.createOscillator();
@@ -43,7 +37,6 @@ export function playHorn() {
   });
 }
 
-/** Engine rev — played when user hits Compare / Suggest */
 export function playRevSound() {
   if (!_enabled) return;
   const c = ctx();
@@ -69,7 +62,6 @@ export function playRevSound() {
   src.start();
 }
 
-/** Soft click — chip toggles, tab switches */
 export function playClick() {
   if (!_enabled) return;
   const c = ctx();
@@ -85,7 +77,6 @@ export function playClick() {
   osc.stop(c.currentTime + 0.09);
 }
 
-/** Heart pop — save button */
 export function playHeartPop() {
   if (!_enabled) return;
   const c = ctx();
@@ -101,7 +92,6 @@ export function playHeartPop() {
   });
 }
 
-/** Chime — share copied / star rating */
 export function playChime() {
   if (!_enabled) return;
   const c = ctx();
@@ -117,7 +107,6 @@ export function playChime() {
   });
 }
 
-/** Notify pop — toast / garage save */
 export function playNotify() {
   if (!_enabled) return;
   const c = ctx();
