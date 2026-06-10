@@ -460,7 +460,7 @@ html.dark .verdict-text{color:var(--n600)}
 }
 .info-btn{font-size:16px;padding:6px 11px;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
 .info-popup{
-  display:none;position:absolute;top:62px;right:16px;
+  display:none;position:fixed;top:62px;right:16px;z-index:350;
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--r-lg);padding:18px 20px 14px;
   max-width:300px;box-shadow:var(--sh-lg);z-index:400;
