@@ -280,9 +280,7 @@ export function renderResults(data, mode = 'compare') {
     buildRatingWidget() +
     buildReset(mode);
 
-  const saveBtn = box.querySelector('#saveResultBtn');
   const shareBtn = box.querySelector('#shareBtn');
-  if (saveBtn) saveBtn.addEventListener('click', () => doSave(data), { once: true });
   if (shareBtn) shareBtn.addEventListener('click', () => doShare(data));
   initStickyBar(bikes, winner_index);
   initRating();
@@ -344,7 +342,7 @@ function buildHero(bikes, wi, reason, mode) {
     const off = C - (b.score / 100) * C;
     return `
       <div class="bike-hero-card${isW ? ' is-winner' : ''}">
-        ${isW && mode !== 'profile' ? '<div class="winner-label">Top Pick</div>' : ''}
+        ${isW && mode === 'compare' ? '<div class="winner-label">Top Pick</div>' : ''}
         <div class="bike-hero-name">${b.name}</div>
         <div class="score-dial">
           <svg viewBox="0 0 64 64" fill="none">
@@ -364,7 +362,7 @@ function buildHero(bikes, wi, reason, mode) {
   return `
     <div class="compare-hero result-block">
       <div class="compare-bikes-row" style="grid-template-columns:${cols};justify-items:center">${cards}</div>
-      ${reason ? `<div class="hero-reason">Top pick rationale: <strong>${reason}</strong></div>` : ''}
+      ${reason && mode === 'compare' ? `<div class="hero-reason">Top pick rationale: <strong>${reason}</strong></div>` : ''}
     </div>`;
 }
 
