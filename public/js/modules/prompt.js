@@ -58,7 +58,7 @@ Return ONLY valid JSON, no markdown fences, no text outside JSON:
 
 export function buildSuggestPrompt({ budget, prefList, location, customPref }) {
   const bud = Number(budget).toLocaleString('en-IN');
-  return `You are a professional Indian motorcycle advisor. Suggest exactly 3 bikes within Rs ${bud} for a rider in ${location || 'India'}.
+  return `You are a professional Indian motorcycle advisor. Suggest exactly 2 bikes within Rs ${bud} for a rider in ${location || 'India'}.
 
 Preferences: ${prefList || 'general riding'}
 Note: ${customPref || 'none'}

@@ -41,7 +41,7 @@ export async function suggestNow(selectedPrefs) {
   setLoading(true);
   try {
     const result = await fetchComparison(buildSuggestPrompt({ budget, prefList, location, customPref }));
-    renderResults(result, 'suggest');
+   renderResults(result, 'suggest'); 
   } catch (err) {
     showError(err.message);
     console.error('[Defikent] suggest error:', err);

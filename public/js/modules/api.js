@@ -1,3 +1,8 @@
+/**
+ * api.js — browser-side HTTP layer.
+ * Talks ONLY to our own Vercel function at /api/compare.
+ * The Groq API key is NEVER in the browser.
+ */
 import { CONFIG } from './config.js';
 
 export async function fetchComparison(prompt) {
