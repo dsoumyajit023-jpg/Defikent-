@@ -136,8 +136,8 @@ export function initTabs() {
       playClick();
       // Clear results and sticky bar when switching tabs
       const results = document.getElementById('results');
-      if (results) { results.classList.remove('show'); results.innerHTML = ''; }
-      const stickyBar = document.getElementById('stickyBar');
+    const stickyBar = document.getElementById('stickyBar');
+if (stickyBar) { stickyBar.classList.remove('visible'); stickyBar.innerHTML = ''; }
       if (stickyBar) stickyBar.classList.remove('visible');
       const errorBox = document.getElementById('errorBox');
       if (errorBox) errorBox.classList.remove('show');
