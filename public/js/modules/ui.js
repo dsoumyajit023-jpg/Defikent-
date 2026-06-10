@@ -300,7 +300,9 @@ function initStickyBar(bikes, wi) {
     </div>`).join('<span class="sticky-vs">vs</span>');
   const results = document.getElementById('results');
   const hero = document.querySelector('.compare-hero');
-  new IntersectionObserver(([e]) => bar.classList.toggle('visible', !e.isIntersecting), { threshold: 0.1 })
+ bar.style.visibility = '';
+bar.style.borderBottom = '';
+new IntersectionObserver(([e]) => bar.classList.toggle('visible', !e.isIntersecting), { threshold: 0.1 })
     .observe(hero || results);
 }
 
@@ -538,7 +540,6 @@ document.getElementById('profileBike')?.addEventListener('input', () => {
 });
 
 // Suggest mode - clear results on any input change
-// Suggest mode - clear results on any input change
 document.getElementById('suggestCustomPref')?.addEventListener('input', () => {
   const results = document.getElementById('results');
   if (results) { results.classList.remove('show'); results.innerHTML = ''; }
@@ -550,8 +551,13 @@ document.getElementById('suggestCustomPref')?.addEventListener('input', () => {
 document.getElementById('budgetSlider')?.addEventListener('input', () => {
   const results = document.getElementById('results');
   if (results) { results.classList.remove('show'); results.innerHTML = ''; }
-  const stickyBar = document.getElementById('stickyBar');
-  if (stickyBar) stickyBar.classList.remove('visible');
+ const stickyBar = document.getElementById('stickyBar');
+if (stickyBar) { 
+  stickyBar.classList.remove('visible'); 
+  stickyBar.innerHTML = ''; 
+  stickyBar.style.visibility = 'hidden';
+  stickyBar.style.borderBottom = 'none';
+}
 });
 
 // All tabs enter key
