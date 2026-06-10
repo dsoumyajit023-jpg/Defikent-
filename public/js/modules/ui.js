@@ -357,7 +357,7 @@ function buildHero(bikes, wi, reason, mode) {
         <div class="score-sub">out of 100</div>
         ${b.key_strength ? `<div class="hero-tag">${b.key_strength}</div>` : ''}
       </div>`;
-  }).join('<div class="vs-col"><span class="vs-text">vs</span></div>');
+  }).join(mode === 'compare' ? '<div class="vs-col"><span class="vs-text">vs</span></div>' : '');
 
   return `
     <div class="compare-hero result-block">
