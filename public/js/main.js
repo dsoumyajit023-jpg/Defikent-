@@ -2,7 +2,7 @@ import {
   initSplash, initSoundToggle,
   initLocationDropdowns, initPreferenceChips,
   initSliders, initBikeCards, initBudgetSlider, initTabs,
-  resetAll, resetSuggest, renderGarage,
+  resetAll, resetSuggest,
 } from './modules/ui.js';
 import { compareNow, profileNow, suggestNow } from './modules/compare.js';
 import { playHorn, setSoundEnabled, loadSoundPref } from './modules/sounds.js';
@@ -48,23 +48,6 @@ document.getElementById('results')?.addEventListener('click', e => {
   else                   { comparePrefs.clear(); resetAll(); }
 });
 
-const garagePanel = document.getElementById('garagePanel');
-const garageOverlay = document.getElementById('garageOverlay');
-
-function openGarage() {
-  garagePanel.classList.add('open');
-  garageOverlay.style.display = 'block';
-  renderGarage();
-}
-function closeGarage() {
-  garagePanel.classList.remove('open');
-  garageOverlay.style.display = 'none';
-}
-
-document.getElementById('garageClose')?.addEventListener('click', closeGarage);
-garageOverlay?.addEventListener('click', closeGarage);
-
-document.getElementById('garageNavBtn')?.addEventListener('click', openGarage);
 document.getElementById('homeNavBtn')?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 document.getElementById('suggestNavBtn')?.addEventListener('click', () => {
   document.querySelector('[data-tab="suggest"]')?.click();
