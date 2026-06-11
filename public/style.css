@@ -61,94 +61,354 @@ body{
 }
 
 /* ════════════════════ SPLASH ════════════════════════════════════ */
+/* ===========================
+   DEFIKENT NEW SPLASH SCREEN
+   Navy Theme: #23395d
+=========================== */
+
 #splash{
-  position:fixed;inset:0;z-index:9999;background:#0d1117;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
-  transition:opacity .5s ease,transform .5s ease;overflow:hidden;
-}
-#splash.hide{opacity:0;pointer-events:none;transform:translateY(-14px)}
-
-/* Road at bottom */
-.road-line{
-  position:absolute;bottom:0;left:0;right:0;height:6px;
-  background:repeating-linear-gradient(90deg,#374151 0,#374151 40px,transparent 40px,transparent 80px);
-  opacity:.4;
-}
-
-/* Motorcycle wrap — rides across then stops centre */
-.moto-wrap{
-  position:relative;display:flex;align-items:center;
-  animation:motoRide 1.6s cubic-bezier(.25,.46,.45,.94) forwards;
-  margin-bottom:24px;
-}
-@keyframes motoRide{
-  0%  {transform:translateX(-120vw)}
-  100%{transform:translateX(0)}
-}
-.moto-svg{width:200px;height:100px;filter:drop-shadow(0 8px 24px rgba(65,118,232,.35))}
-
-/* Wheel spin on SVG wheels */
-.wheel{
-  transform-origin:center;
-  animation:wheelSpin 0.4s linear infinite;
-}
-.rear-wheel {transform-origin:42px 72px}
-.front-wheel{transform-origin:158px 72px}
-@keyframes wheelSpin{to{transform:rotate(360deg)}}
-
-/* Smoke puffs */
-.smoke{opacity:0;animation:puff 1.2s ease-out infinite}
-.s1{animation-delay:0s}
-.s2{animation-delay:.2s}
-.s3{animation-delay:.4s}
-@keyframes puff{
-  0%  {opacity:0;transform:translateX(0) scale(1)}
-  30% {opacity:.6}
-  100%{opacity:0;transform:translateX(-20px) scale(2.5)}
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at top left,
+      rgba(65,118,232,.18),
+      transparent 40%),
+    linear-gradient(135deg,
+      #0f172a 0%,
+      #1b2c47 40%,
+      #23395d 100%);
+  overflow:hidden;
 }
 
-/* Speed lines */
-.speed-lines{
-  position:absolute;left:-70px;top:50%;transform:translateY(-50%);
-  display:flex;flex-direction:column;gap:8px;
+#splash::before{
+  content:"";
+  position:absolute;
+  width:600px;
+  height:600px;
+  border-radius:50%;
+  background:rgba(65,118,232,.08);
+  filter:blur(100px);
+  top:-250px;
+  right:-200px;
 }
-.speed-lines span{
-  display:block;height:2px;background:linear-gradient(90deg,transparent,rgba(65,118,232,.7));
-  border-radius:2px;animation:speedLine 0.5s ease-out infinite;
+
+#splash::after{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  border-radius:50%;
+  background:rgba(255,255,255,.03);
+  filter:blur(120px);
+  bottom:-250px;
+  left:-150px;
 }
-.speed-lines span:nth-child(1){width:50px;animation-delay:0s}
-.speed-lines span:nth-child(2){width:70px;animation-delay:.07s}
-.speed-lines span:nth-child(3){width:40px;animation-delay:.14s}
-.speed-lines span:nth-child(4){width:60px;animation-delay:.21s}
-.speed-lines span:nth-child(5){width:45px;animation-delay:.28s}
-@keyframes speedLine{
-  0%  {opacity:0;transform:scaleX(0);transform-origin:right}
-  40% {opacity:1;transform:scaleX(1)}
-  100%{opacity:0;transform:scaleX(1.5)}
+
+.splash-grid{
+  width:min(1180px,92%);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  gap:60px;
+}
+
+/* LEFT */
+
+.splash-left{
+  animation:fadeUp .8s ease forwards;
 }
 
 .splash-wordmark{
-  font-family:var(--fd);font-size:52px;color:#fff;letter-spacing:-1px;
-  animation:fadeUp .8s .2s cubic-bezier(.16,1,.3,1) both;
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(58px,8vw,92px);
+  color:#fff;
+  line-height:1;
+  letter-spacing:-2px;
 }
-.splash-wordmark em{color:#4176e8;font-style:italic}
+
+.splash-wordmark em{
+  color:#4176e8;
+  font-style:italic;
+}
+
 .splash-sub{
-  font-size:11px;font-weight:500;color:#6b7a92;letter-spacing:4px;text-transform:uppercase;
-  animation:fadeUp .8s .35s cubic-bezier(.16,1,.3,1) both;margin-top:6px;
+  margin-top:12px;
+  color:rgba(255,255,255,.72);
+  text-transform:uppercase;
+  letter-spacing:8px;
+  font-size:13px;
 }
 
-/* Small wheel spinner below wordmark */
-.splash-spinner{
-  width:48px;height:48px;margin-top:22px;
-  animation:fadeUp .8s .5s cubic-bezier(.16,1,.3,1) both;
+.splash-points{
+  margin-top:48px;
 }
-.splash-spinner svg{width:48px;height:48px}
-.splash-spin-arc{
-  transform-origin:30px 30px;
-  animation:arcSpin 1s linear infinite;
-}
-@keyframes arcSpin{to{transform:rotate(360deg)}}
 
+.point{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:20px;
+  color:#fff;
+  font-size:18px;
+  font-weight:600;
+  opacity:0;
+  transform:translateY(15px);
+}
+
+.point span{
+  color:#6fa0ff;
+  font-size:20px;
+}
+
+.point-1{
+  animation:pointIn .5s ease forwards .5s;
+}
+
+.point-2{
+  animation:pointIn .5s ease forwards .9s;
+}
+
+.point-3{
+  animation:pointIn .5s ease forwards 1.3s;
+}
+
+/* LOADER */
+
+.loader-track{
+  margin-top:50px;
+  display:flex;
+  gap:14px;
+}
+
+.loader-dot{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  animation:loaderPulse 1.6s infinite;
+}
+
+.loader-dot:nth-child(2){
+  animation-delay:.2s;
+}
+
+.loader-dot:nth-child(3){
+  animation-delay:.4s;
+}
+
+.loader-dot:nth-child(4){
+  animation-delay:.6s;
+}
+
+.loader-text{
+  margin-top:18px;
+  color:rgba(255,255,255,.72);
+  font-size:14px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+
+/* RIGHT */
+
+.splash-right{
+  display:flex;
+  justify-content:center;
+  animation:phoneEnter 1s ease forwards;
+}
+
+.phone-wrapper{
+  position:relative;
+}
+
+/* HAND */
+
+.hand{
+  position:absolute;
+  width:180px;
+  height:180px;
+  background:linear-gradient(135deg,#e0b48e,#c68f67);
+  border-radius:60px;
+  bottom:30px;
+  right:-40px;
+  transform:rotate(-18deg);
+  filter:drop-shadow(0 20px 40px rgba(0,0,0,.35));
+  z-index:1;
+}
+
+/* PHONE */
+
+.phone{
+  position:relative;
+  width:280px;
+  height:560px;
+  background:#0d1117;
+  border-radius:42px;
+  padding:14px;
+  box-shadow:
+    0 35px 80px rgba(0,0,0,.5),
+    0 0 50px rgba(65,118,232,.2);
+  z-index:2;
+}
+
+.phone-notch{
+  position:absolute;
+  top:12px;
+  left:50%;
+  transform:translateX(-50%);
+  width:110px;
+  height:24px;
+  border-radius:20px;
+  background:#161b22;
+}
+
+.phone-screen{
+  width:100%;
+  height:100%;
+  border-radius:30px;
+  overflow:hidden;
+  padding:22px;
+  background:
+    linear-gradient(180deg,
+      #23395d,
+      #1b2c47);
+}
+
+.screen-logo{
+  color:#fff;
+  font-weight:700;
+  font-size:22px;
+}
+
+.screen-logo span{
+  color:#6fa0ff;
+}
+
+.screen-card{
+  margin-top:18px;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
+}
+
+.screen-card.small{
+  padding:16px;
+}
+
+.screen-bike{
+  width:100%;
+  height:100px;
+  border-radius:18px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(65,118,232,.2),
+      rgba(255,255,255,.08));
+}
+
+.screen-lines span{
+  display:block;
+  height:10px;
+  border-radius:20px;
+  background:rgba(255,255,255,.18);
+  margin-top:12px;
+}
+
+.screen-lines span:nth-child(1){
+  width:90%;
+}
+
+.screen-lines span:nth-child(2){
+  width:70%;
+}
+
+.screen-lines span:nth-child(3){
+  width:50%;
+}
+
+.screen-stat{
+  color:#fff;
+  font-weight:600;
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+@keyframes pointIn{
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+@keyframes loaderPulse{
+  0%,100%{
+    background:rgba(255,255,255,.12);
+    transform:scale(1);
+  }
+  50%{
+    background:#4176e8;
+    transform:scale(1.25);
+    box-shadow:0 0 20px rgba(65,118,232,.7);
+  }
+}
+
+@keyframes phoneEnter{
+  from{
+    opacity:0;
+    transform:translateX(80px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .splash-grid{
+    grid-template-columns:1fr;
+    text-align:center;
+    gap:40px;
+  }
+
+  .splash-points .point{
+    justify-content:center;
+  }
+
+  .loader-track{
+    justify-content:center;
+  }
+
+  .phone{
+    width:220px;
+    height:440px;
+  }
+
+  .hand{
+    width:140px;
+    height:140px;
+    right:-20px;
+    bottom:20px;
+  }
+
+}
 /* ════════════════════ HEADER ════════════════════════════════════ */
 header{
   position:sticky;top:0;z-index:200;
