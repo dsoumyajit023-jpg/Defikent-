@@ -118,23 +118,24 @@ function attachAutocomplete(inputId) {
     if (input.value.trim().length >= 2) input.dispatchEvent(new Event('input'));
   });
 }
-/* ── Bike cards ──────────────────────────────────────────────────────────── */
+
 export function initBikeCards() {
   [0, 1, 2].forEach(i => {
     const input = document.getElementById(`bike${i}`);
     if (!input) return;
     input.addEventListener('input', () => {
       markFilled(i);
-      // Clear results when user edits any bike name
       const results = document.getElementById('results');
       if (results) { results.classList.remove('show'); results.innerHTML = ''; }
       const stickyBar = document.getElementById('stickyBar');
       if (stickyBar) stickyBar.classList.remove('visible');
     });
- input.addEventListener('keydown', (e) => {
+    input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        });
+        document.getElementById('compareBtn')?.click();
+      }
+    });
   });
 
   // Autocomplete for all bike inputs
@@ -143,12 +144,17 @@ export function initBikeCards() {
   attachAutocomplete('bike2');
   attachAutocomplete('profileBike');
 
-  document.getElementById('addThirdBtn')
-      }
-      }
-    });
+  document.getElementById('addThirdBtn')?.addEventListener('click', () => {
+    document.getElementById('thirdBikeWrap').style.display = 'block';
+    document.getElementById('addThirdBtn').style.display = 'none';
   });
-
+  document.getElementById('removeThirdBtn')?.addEventListener('click', () => {
+    document.getElementById('thirdBikeWrap').style.display = 'none';
+    document.getElementById('addThirdBtn').style.display = 'inline-flex';
+    const inp = document.getElementById('bike2'); if (inp) inp.value = '';
+    markFilled(2);
+  });
+}
   // Suggest mode enter key
   document.getElementById('suggestCustomPref')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
