@@ -160,25 +160,24 @@ const exampleBikes = [
 
   let index = 0;
 
+  input.style.transition = 'opacity 0.8s ease';
+
   setInterval(() => {
-    // Stop changing while user is typing or focusing
     if (document.activeElement === input || input.value.trim() !== '') return;
 
-    input.placeholder = `e.g. ${exampleBikes[index]}`;
-    index = (index + 1) % exampleBikes.length;
-  }, 1000);
-}); 
- 
-  document.getElementById('addThirdBtn')?.addEventListener('click', () => {
-    document.getElementById('thirdBikeWrap').style.display = 'block';
-    document.getElementById('addThirdBtn').style.display = 'none';
-  });
-  document.getElementById('removeThirdBtn')?.addEventListener('click', () => {
-    document.getElementById('thirdBikeWrap').style.display = 'none';
-    document.getElementById('addThirdBtn').style.display = 'inline-flex';
-    const inp = document.getElementById('bike2'); if (inp) inp.value = '';
-    markFilled(2);
-  });
+    // Fade out
+    input.style.opacity = '0.4';
+
+    setTimeout(() => {
+      input.placeholder = `e.g. ${exampleBikes[index]}`;
+      index = (index + 1) % exampleBikes.length;
+
+      // Fade in
+      input.style.opacity = '1';
+    }, 800);
+
+  }, 2500);
+});
   // Suggest mode enter key
   document.getElementById('suggestCustomPref')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
