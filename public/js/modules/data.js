@@ -26,3 +26,28 @@ export const CITIES = {
   'J&K':              ['Jammu','Srinagar','Leh'],
 };
 export const STATES = Object.keys(CITIES);
+export const BIKE_LIST = [
+  'Royal Enfield Classic 350','Royal Enfield Bullet 350','Royal Enfield Hunter 350',
+  'Royal Enfield Meteor 350','Royal Enfield Thunderbird 350','Royal Enfield Himalayan',
+  'Royal Enfield Continental GT 650','Royal Enfield Interceptor 650',
+  'Bajaj Pulsar NS160','Bajaj Pulsar NS200','Bajaj Pulsar RS200',
+  'Bajaj Pulsar 150','Bajaj Pulsar 125','Bajaj Dominar 400','Bajaj Dominar 250',
+  'Bajaj Avenger Street 160','Bajaj Avenger Cruise 220','Bajaj CT100','Bajaj Platina 100',
+  'Hero Splendor Plus','Hero Splendor+','Hero HF Deluxe','Hero Passion Pro',
+  'Hero Glamour','Hero Xtreme 160R','Hero Xpulse 200','Hero Xpulse 200T',
+  'Honda Activa 6G','Honda Shine','Honda Unicorn','Honda Hornet 2.0',
+  'Honda CB300R','Honda CB350','Honda CB350RS','Honda CB500F',
+  'TVS Apache RTR 160','TVS Apache RTR 160 4V','TVS Apache RTR 200 4V',
+  'TVS Apache RR 310','TVS Raider 125','TVS Star City Plus','TVS Sport',
+  'TVS Ronin','TVS Jupiter','Suzuki Gixxer','Suzuki Gixxer SF',
+  'Suzuki Gixxer 250','Suzuki Gixxer SF 250','Suzuki Intruder',
+  'KTM Duke 125','KTM Duke 200','KTM Duke 250','KTM Duke 390',
+  'KTM RC 125','KTM RC 200','KTM RC 390','KTM Adventure 390',
+  'Yamaha FZ-S','Yamaha FZ 25','Yamaha MT-15','Yamaha R15 V4',
+  'Yamaha R15S','Yamaha Fazer 25','Yamaha FZX',
+  'Kawasaki Z650','Kawasaki Ninja 300','Kawasaki Ninja 400',
+  'Kawasaki Ninja 650','Kawasaki Versys 650','Kawasaki Z900',
+  'Jawa 42','Jawa Perak','Jawa Classic','Benelli TRK 502',
+  'Benelli 302R','BMW G 310 R','BMW G 310 GS',
+  'Hero Mavrick 440','Triumph Speed 400','Triumph Scrambler 400X',
+];
