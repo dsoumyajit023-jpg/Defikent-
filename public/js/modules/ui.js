@@ -154,7 +154,6 @@ export function initBikeCards() {
     const inp = document.getElementById('bike2'); if (inp) inp.value = '';
     markFilled(2);
   });
-}
   // Suggest mode enter key
   document.getElementById('suggestCustomPref')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
