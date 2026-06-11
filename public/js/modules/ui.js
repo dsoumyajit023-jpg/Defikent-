@@ -131,15 +131,20 @@ export function initBikeCards() {
       const stickyBar = document.getElementById('stickyBar');
       if (stickyBar) stickyBar.classList.remove('visible');
     });
-  input.addEventListener('keydown', (e) => {
+ input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        document.getElementById('compareBtn')?.click();
-        // Autocomplete for all bike inputs
+        });
+  });
+
+  // Autocomplete for all bike inputs
   attachAutocomplete('bike0');
   attachAutocomplete('bike1');
   attachAutocomplete('bike2');
   attachAutocomplete('profileBike');
+
+  document.getElementById('addThirdBtn')
+      }
       }
     });
   });
