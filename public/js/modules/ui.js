@@ -1,5 +1,5 @@
 import { CONFIG, SPEC_KEYS, SPEC_TOOLTIPS, META_KEYS, META_TOOLTIPS, PREFERENCES } from './config.js';
-import { CITIES, STATES } from './data.js';
+import { CITIES, STATES, BIKE_LIST } from './data.js';
 import { saveToGarage, getGarage, deleteFromGarage } from './garage.js';
 import { playClick, playHeartPop, playChime, playNotify } from './sounds.js';
 
@@ -80,7 +80,44 @@ function wire(sliderId, valId, min, max, def, fmt, step) {
   vl.textContent = fmt(def);
   sl.addEventListener('input', () => { vl.textContent = fmt(sl.value); });
 }
+function attachAutocomplete(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
 
+  const wrap = input.parentElement;
+  wrap.style.position = 'relative';
+
+  const drop = document.createElement('div');
+  drop.className = 'bike-dropdown';
+  wrap.appendChild(drop);
+
+  input.addEventListener('input', () => {
+    const val = input.value.trim().toLowerCase();
+    drop.innerHTML = '';
+    if (!val || val.length < 2) { drop.style.display = 'none'; return; }
+    const matches = BIKE_LIST.filter(b => b.toLowerCase().includes(val)).slice(0, 6);
+    if (!matches.length) { drop.style.display = 'none'; return; }
+    matches.forEach(bike => {
+      const item = document.createElement('div');
+      item.className = 'bike-dropdown-item';
+      item.textContent = bike;
+      item.addEventListener('mousedown', () => {
+        input.value = bike;
+        drop.style.display = 'none';
+        input.dispatchEvent(new Event('input'));
+      });
+      drop.appendChild(item);
+    });
+    drop.style.display = 'block';
+  });
+
+  input.addEventListener('blur', () => {
+    setTimeout(() => { drop.style.display = 'none'; }, 150);
+  });
+  input.addEventListener('focus', () => {
+    if (input.value.trim().length >= 2) input.dispatchEvent(new Event('input'));
+  });
+}
 /* ── Bike cards ──────────────────────────────────────────────────────────── */
 export function initBikeCards() {
   [0, 1, 2].forEach(i => {
@@ -98,6 +135,11 @@ export function initBikeCards() {
       if (e.key === 'Enter') {
         e.preventDefault();
         document.getElementById('compareBtn')?.click();
+        // Autocomplete for all bike inputs
+  attachAutocomplete('bike0');
+  attachAutocomplete('bike1');
+  attachAutocomplete('bike2');
+  attachAutocomplete('profileBike');
       }
     });
   });
@@ -539,7 +581,6 @@ document.getElementById('profileBike')?.addEventListener('input', () => {
   if (stickyBar) stickyBar.classList.remove('visible');
 });
 
-// Suggest mode - clear results on any input change
 // Suggest mode - clear results on any input change
 document.getElementById('suggestCustomPref')?.addEventListener('input', () => {
   const results = document.getElementById('results');
