@@ -143,7 +143,32 @@ export function initBikeCards() {
   attachAutocomplete('bike1');
   attachAutocomplete('bike2');
   attachAutocomplete('profileBike');
+const exampleBikes = [
+  "Classic 350",
+  "Hunter 350",
+  "Apache RTR 160",
+  "Pulsar NS200",
+  "MT 15",
+  "R15 V4",
+  "Duke 390",
+  "Activa 6G"
+];
 
+['bike0', 'bike1', 'bike2', 'profileBike'].forEach(id => {
+  const input = document.getElementById(id);
+  if (!input) return;
+
+  let index = 0;
+
+  setInterval(() => {
+    // Stop changing while user is typing or focusing
+    if (document.activeElement === input || input.value.trim() !== '') return;
+
+    input.placeholder = `e.g. ${exampleBikes[index]}`;
+    index = (index + 1) % exampleBikes.length;
+  }, 1000);
+}); 
+ 
   document.getElementById('addThirdBtn')?.addEventListener('click', () => {
     document.getElementById('thirdBikeWrap').style.display = 'block';
     document.getElementById('addThirdBtn').style.display = 'none';
