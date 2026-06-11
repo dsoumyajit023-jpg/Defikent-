@@ -154,13 +154,17 @@ const exampleBikes = [
   "Activa 6G"
 ];
 
-['bike0', 'bike1', 'bike2', 'profileBike'].forEach(id => {
+['bike0', 'bike1', 'bike2', 'profileBike'].forEach((id, inputNumber) => {
   const input = document.getElementById(id);
   if (!input) return;
 
-  let index = 0;
+  // Different starting bike for each input
+  let index = (inputNumber * 2) % exampleBikes.length;
 
   input.style.transition = 'opacity 0.8s ease';
+
+  // Show initial placeholder immediately
+  input.placeholder = `e.g. ${exampleBikes[index]}`;
 
   setInterval(() => {
     if (document.activeElement === input || input.value.trim() !== '') return;
@@ -169,8 +173,8 @@ const exampleBikes = [
     input.style.opacity = '0.4';
 
     setTimeout(() => {
-      input.placeholder = `e.g. ${exampleBikes[index]}`;
       index = (index + 1) % exampleBikes.length;
+      input.placeholder = `e.g. ${exampleBikes[index]}`;
 
       // Fade in
       input.style.opacity = '1';
