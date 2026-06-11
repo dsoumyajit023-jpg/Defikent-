@@ -471,3 +471,16 @@ html.dark .verdict-text{color:var(--n600)}
 .info-popup strong{color:var(--accent)}
 .info-popup em{color:var(--muted);font-style:italic}
 .info-close{position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:14px;color:var(--muted)}
+.bike-dropdown{
+  display:none;position:absolute;top:100%;left:0;right:0;
+  background:var(--surface);border:1.5px solid var(--accent);
+  border-radius:var(--r-md);box-shadow:var(--sh-lg);z-index:999;
+  max-height:220px;overflow-y:auto;margin-top:4px;
+}
+.bike-dropdown-item{
+  padding:10px 16px;font-size:14px;font-family:var(--fb);
+  color:var(--text);cursor:pointer;transition:background .12s;
+  border-bottom:1px solid var(--border);
+}
+.bike-dropdown-item:last-child{border-bottom:none}
+.bike-dropdown-item:hover{background:var(--accent-light);color:var(--accent)}
