@@ -6,8 +6,7 @@
   <meta name="description" content="Defikent — AI-powered bike comparison for Indian riders.">
   <title>Defikent — Bike Intelligence</title>
 
-  <!-- Favicon: mini bike wheel -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%230d1117'/%3E%3Ccircle cx='18' cy='42' r='11' fill='none' stroke='%234176e8' stroke-width='5'/%3E%3Ccircle cx='46' cy='42' r='11' fill='none' stroke='%234176e8' stroke-width='5'/%3E%3Cpath d='M18 42 L26 20 L38 30 L46 42' fill='none' stroke='%23fff' stroke-width='4' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%230e1e3d'/%3E%3Ccircle cx='18' cy='42' r='11' fill='none' stroke='%234176e8' stroke-width='5'/%3E%3Ccircle cx='46' cy='42' r='11' fill='none' stroke='%234176e8' stroke-width='5'/%3E%3Cpath d='M18 42 L26 20 L38 30 L46 42' fill='none' stroke='%23fff' stroke-width='4' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,10 +15,18 @@
 </head>
 <body>
 
+<!-- ═══════════════════════ SPLASH ═══════════════════════════════ -->
 <div id="splash">
+
+  <!-- Backgrounds -->
+  <div class="hex-bg"></div>
   <div class="road-line"></div>
 
+  <!-- Motorcycle -->
   <div class="moto-wrap" id="motoWrap">
+    <div class="speed-lines">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
     <svg class="moto-svg" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle class="wheel rear-wheel" cx="42" cy="72" r="22" stroke="#4176e8" stroke-width="5"/>
       <circle cx="42" cy="72" r="6" fill="#4176e8"/>
@@ -49,50 +56,86 @@
       <ellipse cx="105" cy="30" rx="8" ry="9" fill="#0d1117" stroke="#6b7a92" stroke-width="1.5"/>
       <path d="M100 38 Q105 52 108 55 L92 55 Z" fill="#0d1117" stroke="#6b7a92" stroke-width="1.5"/>
     </svg>
-    <div class="speed-lines">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
   </div>
 
+  <!-- Wordmark -->
   <div class="splash-wordmark">Defi<em>kent</em></div>
   <div class="splash-sub">Smart Bike Intelligence</div>
 
+  <!-- Divider -->
+  <div class="splash-divider"></div>
+
+  <!-- Feature bullets -->
+  <ul class="splash-features">
+    <li>
+      <div class="feat-icon">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <polyline points="1,5 3.5,8 9,1.5" stroke="#4176e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      From Specs to Stories
+    </li>
+    <li>
+      <div class="feat-icon">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <polyline points="1,5 3.5,8 9,1.5" stroke="#4176e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      Every Indian Bike, One Hub
+    </li>
+    <li>
+      <div class="feat-icon">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <polyline points="1,5 3.5,8 9,1.5" stroke="#4176e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      Choose Smarter, Ride Better
+    </li>
+  </ul>
+
+  <!-- Unique wheel loader -->
   <div class="splash-spinner">
-    <svg viewBox="0 0 60 60" fill="none">
-      <circle cx="30" cy="30" r="24" stroke="rgba(255,255,255,0.12)" stroke-width="4"/>
-      <circle cx="30" cy="30" r="24" stroke="#4176e8" stroke-width="4" stroke-linecap="round"
-        stroke-dasharray="150" stroke-dashoffset="110" class="splash-spin-arc"/>
-      <circle cx="30" cy="30" r="5" fill="#4176e8"/>
-      <line x1="30" y1="6"  x2="30" y2="54" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
-      <line x1="6"  y1="30" x2="54" y2="30" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
-      <line x1="13" y1="13" x2="47" y2="47" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
-      <line x1="47" y1="13" x2="13" y2="47" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
-    </svg>
+    <div class="wheel-loader">
+      <div class="wl-track"></div>
+      <div class="wl-spoke"></div>
+      <div class="wl-arc"></div>
+      <div class="wl-orbit"><div class="wl-dot"></div></div>
+      <div class="wl-hub"></div>
+    </div>
+    <div class="splash-loader-text">Loading intelligence</div>
+    <div class="splash-progress-wrap">
+      <div class="splash-progress-bar"></div>
+    </div>
   </div>
+
 </div>
+<!-- ═══════════════════════ END SPLASH ════════════════════════════ -->
+
 
 <header id="siteHeader">
   <div class="header-wordmark">Defi<em>kent</em></div>
   <div class="header-divider"></div>
   <span class="header-sub">Bike Comparison</span>
-<div class="header-controls">
+  <div class="header-controls">
     <button class="ctrl-btn info-btn" id="infoToggle" aria-label="About">&#9432;</button>
   </div>
 
   <div class="info-popup" id="infoPopup">
     <p>Built with passion by <strong>Soumyajit Das</strong> — a smart AI-powered bike comparison platform for Indian riders. Compare specs, costs, and get intelligent recommendations in seconds. Your perfect ride is just one search away. — <em>Soumyajit Das</em></p>
     <button class="info-close" id="infoClose">&#x2715;</button>
-  </div> 
+  </div>
 </header>
+
 
 <main>
 
-<div class="tab-bar fadein">
+  <div class="tab-bar fadein">
     <button class="tab-btn active" data-tab="compare">Compare Bikes</button>
     <button class="tab-btn" data-tab="profile">Bike Profile</button>
     <button class="tab-btn" data-tab="suggest">AI Suggestion</button>
   </div>
 
+  <!-- ── Compare Tab ── -->
   <div class="tab-panel active" id="tab-compare">
 
     <div class="card fadein" style="animation-delay:.08s">
@@ -151,6 +194,7 @@
 
   </div>
 
+  <!-- ── Profile Tab ── -->
   <div class="tab-panel" id="tab-profile">
 
     <div class="card fadein">
@@ -168,6 +212,7 @@
 
   </div>
 
+  <!-- ── Suggest Tab ── -->
   <div class="tab-panel" id="tab-suggest">
 
     <div class="card fadein">
@@ -224,6 +269,8 @@
   <div id="results"></div>
 
 </main>
+
 <script type="module" src="js/main.js"></script>
 </body>
-                                </html>
+</html>
+                                
