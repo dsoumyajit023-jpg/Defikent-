@@ -1,3 +1,4 @@
+
 /**
  * api.js — browser-side HTTP layer.
  * Talks ONLY to our own Vercel function at /api/compare.
