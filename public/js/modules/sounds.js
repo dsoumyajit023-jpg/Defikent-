@@ -1,134 +1,164 @@
-/**
- * sounds.js — All sounds generated via Web Audio API.
- * No external audio files needed.
- */
 
-let _ctx = null;
-let _enabled = true;
+export function buildPrompt({ bikes, location, kmDay, salary, prefList, customPref }) {
+  const sal = Number(salary).toLocaleString('en-IN');
+  return `You are a professional Indian vehicle comparison expert. You can compare any type of vehicle — motorcycles, scooters, hatchbacks, sedans, SUVs, electric vehicles, or any mix. Compare: ${bikes.join(' vs ')}.
 
-function ctx() {
-  if (!_ctx) _ctx = new (window.AudioContext || window.webkitAudioContext)();
-  if (_ctx.state === 'suspended') _ctx.resume();
-  return _ctx;
+User:
+- Location: ${location}
+- Daily usage: ${kmDay} km/day
+- Monthly salary: Rs ${sal}
+- Preferences: ${prefList}
+- Note: ${customPref || 'none'}
+
+Detect the vehicle type automatically. For cars, adapt specs (e.g. mileage in km/l or kmpl, fuel_tank in litres, weight in kg, seat_height can be "N/A" for cars, ground_clearance in mm). For EVs, mileage = range in km, fuel_tank = battery in kWh.
+
+Return ONLY valid JSON, no markdown fences, no text outside JSON:
+{
+  "bikes": [
+    {
+      "name": "Full Vehicle Name",
+      "specs": {
+        "engine": "...", "power": "...", "torque": "...", "mileage": "...",
+        "fuel_tank": "...", "tyre_front": "...", "tyre_rear": "...",
+        "weight": "...", "seat_height": "...", "ground_clearance": "...",
+        "price_ex": "...", "launch_date": "Month YYYY"
+      },
+      "score": 78,
+      "emi": "Rs X,XXX/month (3yr)",
+      "fuel_cost_month": "Rs X,XXX",
+      "service_cost_year": "Rs X,XXX",
+      "insurance_year": "Rs X,XXX",
+      "total_monthly_cost": "Rs X,XXX",
+      "salary_needed": "Rs XX,XXX/month recommended",
+      "parts_availability": "Excellent/Good/Average",
+      "city_traffic_score": "X/10",
+      "resale_value": "Good/Average/Poor",
+      "key_strength": "one-line strength",
+      "key_weakness": "one-line weakness"
+    }
+  ],
+  "winner_index": 0,
+  "winner_reason": "one line reason",
+  "differences": [
+    {"spec": "Mileage / Range", "verdict": "which wins and by how much"},
+    {"spec": "Price", "verdict": "which wins and by how much"},
+    {"spec": "Power", "verdict": "which wins and by how much"},
+    {"spec": "Comfort", "verdict": "which wins and why"},
+    {"spec": "Maintenance", "verdict": "which wins and why"}
+  ],
+  "yes_no": [
+    {"question": "Better for ${location} city traffic?", "yes_index": 0},
+    {"question": "Superior fuel efficiency on ${kmDay}km/day?", "yes_index": 0},
+    {"question": "Easier to maintain at local service centres?", "yes_index": 0},
+    {"question": "More comfortable for long highway journeys?", "yes_index": 0},
+    {"question": "Safer braking system overall?", "yes_index": 0},
+    {"question": "Better resale value after 3 years?", "yes_index": 0}
+  ],
+  "verdict": "2-3 sentence conclusion. Be direct and helpful."
+}`;
 }
 
-export function setSoundEnabled(v) {
-  _enabled = v;
-  localStorage.setItem('dk_sound', v ? '1' : '0');
+export function buildSuggestPrompt({ budget, prefList, location, customPref }) {
+  const bud = Number(budget).toLocaleString('en-IN');
+  return `You are a professional Indian vehicle advisor. You can suggest any type of vehicle — motorcycle, scooter, hatchback, sedan, SUV, or EV. Suggest exactly 2 vehicles within Rs ${bud} for a buyer in ${location || 'India'}.
+
+Preferences: ${prefList || 'general use'}
+Note: ${customPref || 'none'}
+
+Pick the most suitable vehicle types based on the preferences. Adapt specs for the vehicle type (cars: seat_height = "N/A"; EVs: mileage = range in km, fuel_tank = battery kWh).
+
+Return ONLY valid JSON, no markdown fences, no text outside JSON:
+{
+  "bikes": [
+    {
+      "name": "Full Vehicle Name",
+      "specs": {
+        "engine": "...", "power": "...", "torque": "...", "mileage": "...",
+        "fuel_tank": "...", "tyre_front": "...", "tyre_rear": "...",
+        "weight": "...", "seat_height": "...", "ground_clearance": "...",
+        "price_ex": "...", "launch_date": "Month YYYY"
+      },
+      "score": 80,
+      "emi": "Rs X,XXX/month (3yr)",
+      "fuel_cost_month": "Rs X,XXX",
+      "service_cost_year": "Rs X,XXX",
+      "insurance_year": "Rs X,XXX",
+      "total_monthly_cost": "Rs X,XXX",
+      "salary_needed": "Rs XX,XXX/month recommended",
+      "parts_availability": "Excellent/Good/Average",
+      "city_traffic_score": "X/10",
+      "resale_value": "Good/Average/Poor",
+      "key_strength": "...",
+      "key_weakness": "..."
+    }
+  ],
+  "winner_index": 0,
+  "winner_reason": "one line",
+  "differences": [
+    {"spec": "Mileage / Range", "verdict": "..."},
+    {"spec": "Price", "verdict": "..."},
+    {"spec": "Power", "verdict": "..."},
+    {"spec": "Comfort", "verdict": "..."},
+    {"spec": "Maintenance", "verdict": "..."}
+  ],
+  "yes_no": [
+    {"question": "Better value for Rs ${bud} budget?", "yes_index": 0},
+    {"question": "Superior fuel efficiency / range?", "yes_index": 0},
+    {"question": "Easier to maintain locally?", "yes_index": 0},
+    {"question": "More comfortable for long journeys?", "yes_index": 0},
+    {"question": "Safer braking system?", "yes_index": 0},
+    {"question": "Better resale value after 3 years?", "yes_index": 0}
+  ],
+  "verdict": "2-3 sentence recommendation."
+}`;
 }
 
-export function loadSoundPref() {
-  const s = localStorage.getItem('dk_sound');
-  _enabled = s === null ? true : s === '1';
-  return _enabled;
-}
+export function buildProfilePrompt({ bike, location }) {
+  return `You are a professional Indian vehicle expert. Give a complete profile of: ${bike} for a buyer/rider in ${location || 'India'}.
 
-/** Bike horn — two-tone beep played at site open */
-export function playHorn() {
-  return;
-  const c = ctx();
-  [{ f: 520, t: 0 }, { f: 420, t: 0.28 }].forEach(({ f, t }) => {
-    const osc  = c.createOscillator();
-    const gain = c.createGain();
-    osc.connect(gain); gain.connect(c.destination);
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(f, c.currentTime + t);
-    osc.frequency.exponentialRampToValueAtTime(f * 1.04, c.currentTime + t + 0.13);
-    gain.gain.setValueAtTime(0, c.currentTime + t);
-    gain.gain.linearRampToValueAtTime(0.22, c.currentTime + t + 0.02);
-    gain.gain.setValueAtTime(0.22, c.currentTime + t + 0.12);
-    gain.gain.linearRampToValueAtTime(0, c.currentTime + t + 0.20);
-    osc.start(c.currentTime + t);
-    osc.stop(c.currentTime + t + 0.22);
-  });
-}
+Detect whether this is a motorcycle, scooter, car, EV, or other vehicle type and adapt specs accordingly (cars: seat_height = "N/A"; EVs: mileage = range in km, fuel_tank = battery kWh).
 
-/** Engine rev — played when user hits Compare / Suggest */
-export function playRevSound() {
-  if (!_enabled) return;
-  const c = ctx();
-  const sr  = c.sampleRate;
-  const dur = 0.7;
-  const buf = c.createBuffer(1, sr * dur, sr);
-  const d   = buf.getChannelData(0);
-  for (let i = 0; i < d.length; i++) {
-    const t    = i / sr;
-    const prog = t / dur;
-    const freq = 60 + 500 * prog * prog;
-    const amp  = 0.15 * Math.pow(1 - prog, 0.4);
-    d[i] = (Math.sin(2 * Math.PI * freq * t)
-          + 0.4 * Math.sin(2 * Math.PI * freq * 2 * t)
-          + 0.15 * Math.sin(2 * Math.PI * freq * 3 * t)) * amp;
-  }
-  const src  = c.createBufferSource();
-  src.buffer = buf;
-  const gain = c.createGain();
-  gain.gain.setValueAtTime(0.7, c.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + dur - 0.05);
-  src.connect(gain); gain.connect(c.destination);
-  src.start();
-}
-
-/** Soft click — chip toggles, tab switches */
-export function playClick() {
-  if (!_enabled) return;
-  const c = ctx();
-  const osc  = c.createOscillator();
-  const gain = c.createGain();
-  osc.connect(gain); gain.connect(c.destination);
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(800, c.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(280, c.currentTime + 0.07);
-  gain.gain.setValueAtTime(0.06, c.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.08);
-  osc.start(c.currentTime);
-  osc.stop(c.currentTime + 0.09);
-}
-
-/** Heart pop — save button */
-export function playHeartPop() {
-  if (!_enabled) return;
-  const c = ctx();
-  [550, 750, 950].forEach((f, i) => {
-    const osc = c.createOscillator(), gain = c.createGain();
-    osc.connect(gain); gain.connect(c.destination);
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(f, c.currentTime + i * 0.07);
-    gain.gain.setValueAtTime(0.10, c.currentTime + i * 0.07);
-    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + i * 0.07 + 0.12);
-    osc.start(c.currentTime + i * 0.07);
-    osc.stop(c.currentTime + i * 0.07 + 0.13);
-  });
-}
-
-/** Chime — share copied / star rating */
-export function playChime() {
-  if (!_enabled) return;
-  const c = ctx();
-  [880, 1100, 1320, 1760].forEach((f, i) => {
-    const osc = c.createOscillator(), gain = c.createGain();
-    osc.connect(gain); gain.connect(c.destination);
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(f, c.currentTime + i * 0.08);
-    gain.gain.setValueAtTime(0.08, c.currentTime + i * 0.08);
-    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + i * 0.08 + 0.28);
-    osc.start(c.currentTime + i * 0.08);
-    osc.stop(c.currentTime + i * 0.08 + 0.30);
-  });
-}
-
-/** Notify pop — toast / garage save */
-export function playNotify() {
-  if (!_enabled) return;
-  const c = ctx();
-  const osc = c.createOscillator(), gain = c.createGain();
-  osc.connect(gain); gain.connect(c.destination);
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(600,  c.currentTime);
-  osc.frequency.setValueAtTime(900,  c.currentTime + 0.08);
-  osc.frequency.setValueAtTime(1100, c.currentTime + 0.16);
-  gain.gain.setValueAtTime(0.10, c.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.35);
-  osc.start(c.currentTime);
-  osc.stop(c.currentTime + 0.36);
+Return ONLY valid JSON, no markdown fences, no text outside JSON:
+{
+  "bikes": [
+    {
+      "name": "Full Vehicle Name",
+      "specs": {
+        "engine": "...", "power": "...", "torque": "...", "mileage": "...",
+        "fuel_tank": "...", "tyre_front": "...", "tyre_rear": "...",
+        "weight": "...", "seat_height": "...", "ground_clearance": "...",
+        "price_ex": "...", "launch_date": "Month YYYY"
+      },
+      "score": 80,
+      "emi": "Rs X,XXX/month (3yr)",
+      "fuel_cost_month": "Rs X,XXX",
+      "service_cost_year": "Rs X,XXX",
+      "insurance_year": "Rs X,XXX",
+      "total_monthly_cost": "Rs X,XXX",
+      "salary_needed": "Rs XX,XXX/month recommended",
+      "parts_availability": "Excellent/Good/Average",
+      "city_traffic_score": "X/10",
+      "resale_value": "Good/Average/Poor",
+      "key_strength": "one-line strength",
+      "key_weakness": "one-line weakness"
+    }
+  ],
+  "winner_index": 0,
+  "winner_reason": "one line summary of this vehicle",
+  "differences": [
+    {"spec": "Best For", "verdict": "..."},
+    {"spec": "Avoid If", "verdict": "..."},
+    {"spec": "Rivals", "verdict": "..."},
+    {"spec": "Value", "verdict": "..."},
+    {"spec": "Verdict", "verdict": "..."}
+  ],
+  "yes_no": [
+    {"question": "Good for daily city commute?", "yes_index": 0},
+    {"question": "Suitable for long highway journeys?", "yes_index": 0},
+    {"question": "Easy to maintain locally?", "yes_index": 0},
+    {"question": "Good resale value after 3 years?", "yes_index": 0},
+    {"question": "Worth the price in ${location || 'India'}?", "yes_index": 0}
+  ],
+  "verdict": "2-3 sentence honest review of this vehicle."
+}`;
 }
