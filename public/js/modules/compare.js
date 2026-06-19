@@ -8,7 +8,7 @@ export async function compareNow(selectedPrefs) {
   const b0 = document.getElementById('bike0')?.value.trim() || '';
   const b1 = document.getElementById('bike1')?.value.trim() || '';
   const b2 = document.getElementById('bike2')?.value.trim() || '';
-  if (!b0 || !b1) { showError('Please enter at least 2 bike names.'); return; }
+  if (!b0 || !b1) { showError('Please enter at least 2 vehicle names.'); return; }
   const bikes      = b2 ? [b0, b1, b2] : [b0, b1];
   const state      = document.getElementById('stateSelect')?.value || '';
   const city       = document.getElementById('citySelect')?.value  || '';
@@ -52,7 +52,7 @@ export async function suggestNow(selectedPrefs) {
 
 export async function profileNow() {
   const bike = document.getElementById('profileBike')?.value.trim() || '';
-  if (!bike) { showError('Please enter a bike name.'); return; }
+  if (!bike) { showError('Please enter a vehicle name.'); return; }
   const location = 'India';
   playRevSound();
   setLoading(true);
