@@ -1,4 +1,3 @@
-
 /**
  * api/compare.js  —  Vercel Serverless Function   POST /api/compare
  *
@@ -7,10 +6,9 @@
  * Returns { result } as a JSON string.
  * The GROQ_API_KEY is NEVER visible to the browser.
  */
-
 const GROQ_URL   = 'https://api.groq.com/openai/v1/chat/completions';
 const MODEL      = process.env.GROQ_MODEL || 'llama3-70b-8192';
-const MAX_TOKENS = 2000;
+const MAX_TOKENS = 4096;
 const TEMP       = 0.3;
 
 export default async function handler(req, res) {
@@ -66,14 +64,26 @@ export default async function handler(req, res) {
 
   /* ── Parse & validate ── */
   const groqData = await groqRes.json();
-  let raw = groqData?.choices?.[0]?.message?.content || '';
+  const choice = groqData?.choices?.[0];
+
+  if (choice?.finish_reason === 'length') {
+    console.warn('[compare] Groq response was cut off (finish_reason=length). Consider raising MAX_TOKENS further.');
+  }
+
+  let raw = choice?.message?.content || '';
   raw = raw.replace(/```json|```/g, '').trim();
 
+  let parsed;
   try {
-    JSON.parse(raw); // ensure it's valid JSON before sending
+    parsed = JSON.parse(raw);
   } catch {
     console.error('[compare] non-JSON from Groq:', raw.slice(0, 200));
     return res.status(502).json({ error: 'AI returned an unexpected format. Please retry.' });
+  }
+
+  if (!parsed || !Array.isArray(parsed.bikes) || parsed.bikes.length === 0) {
+    console.error('[compare] missing bikes array. Got keys:', Object.keys(parsed || {}));
+    return res.status(502).json({ error: 'AI response was incomplete. Please retry.' });
   }
 
   return res.status(200).json({ result: raw });
