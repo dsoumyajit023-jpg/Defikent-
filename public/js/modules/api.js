@@ -23,10 +23,11 @@ export async function fetchComparison(prompt) {
     throw new Error(body.error || `Server error ${res.status}. Please try again.`);
   }
 
-  const data = await res.json();
-  let raw = typeof data.result === 'string' ? data.result : JSON.stringify(data.result);
-  raw = raw.replace(/```json|```/g, '').trim();
-
+const data = await res.json();
+console.log('[Defikent] full server response:', data); // ADD THIS
+let raw = typeof data.result === 'string' ? data.result : JSON.stringify(data.result);
+raw = raw.replace(/```json|```/g, '').trim();
+console.log('[Defikent] raw AI text:', raw); // ADD THIS
   try {
     return JSON.parse(raw);
   } catch {
