@@ -16,8 +16,8 @@ export const SPEC_KEYS = {
   engine:           'Engine',
   power:            'Power',
   torque:           'Torque',
-  mileage:          'Mileage',
-  fuel_tank:        'Fuel Tank',
+  mileage:          'Mileage / Range',
+  fuel_tank:        'Fuel Tank / Battery',
   tyre_front:       'Front Tyre',
   tyre_rear:        'Rear Tyre',
   weight:           'Weight',
@@ -28,15 +28,15 @@ export const SPEC_KEYS = {
 };
 
 export const SPEC_TOOLTIPS = {
-  engine:           'Engine displacement in cc — larger usually means more power',
-  power:            'Max horsepower (bhp) — determines top speed potential',
+  engine:           'Engine displacement in cc (or motor power in kW for EVs) — larger usually means more power',
+  power:            'Max horsepower (bhp/PS) — determines top speed potential',
   torque:           'Pulling force in Nm — higher = better acceleration from standstill',
-  mileage:          'Fuel efficiency in km/l under typical Indian riding conditions',
-  fuel_tank:        'Tank capacity in litres — affects range before next fuel stop',
+  mileage:          'Fuel efficiency in km/l or range in km (for EVs) under typical Indian conditions',
+  fuel_tank:        'Tank capacity in litres or battery capacity in kWh — affects range before next refuel/charge',
   tyre_front:       'Front tyre size — wider tyres give more grip but heavier steering',
   tyre_rear:        'Rear tyre size — affects traction and cornering stability',
-  weight:           'Kerb weight in kg — lighter bikes are easier in city traffic',
-  seat_height:      'Seat height in mm — affects rider reach and comfort at stops',
+  weight:           'Kerb weight in kg — lighter vehicles are easier in city traffic',
+  seat_height:      'Seat height in mm — affects rider/driver comfort and reach',
   ground_clearance: 'Clearance between road and chassis — higher = better on rough roads',
   price_ex:         'Ex-showroom price — on-road will be higher after taxes and insurance',
   launch_date:      'Month and year this model was launched in India',
@@ -49,20 +49,22 @@ export const META_KEYS = [
 ];
 
 export const META_TOOLTIPS = {
-  parts_availability: 'How easily spare parts are available at local mechanics across India',
-  city_traffic_score: 'How well the bike handles stop-and-go city traffic, rated out of 10',
+  parts_availability: 'How easily spare parts are available at local service centres across India',
+  city_traffic_score: 'How well the vehicle handles stop-and-go city traffic, rated out of 10',
   resale_value:       'Expected resale value after 3 years relative to purchase price',
 };
 
 export const PREFERENCES = [
   { key: 'daily_commute',   label: 'Daily Commute' },
-  { key: 'rapido_ola',      label: 'Rapido / OLA Delivery' },
-  { key: 'long_tours',      label: 'Long Tours' },
-  { key: 'highway',         label: 'Highway Riding' },
+  { key: 'delivery_use',    label: 'Delivery / Gig Use' },
+  { key: 'long_tours',      label: 'Long Tours / Road Trips' },
+  { key: 'highway',         label: 'Highway Driving' },
   { key: 'city_traffic',    label: 'Heavy City Traffic' },
-  { key: 'fuel_economy',    label: 'Best Mileage' },
+  { key: 'fuel_economy',    label: 'Best Mileage / Range' },
   { key: 'style',           label: 'Style and Look' },
   { key: 'low_maintenance', label: 'Low Maintenance' },
   { key: 'resale',          label: 'Good Resale Value' },
   { key: 'performance',     label: 'Performance and Speed' },
+  { key: 'family_use',      label: 'Family Use' },
+  { key: 'ev_preferred',    label: 'Electric Vehicle' },
 ];
